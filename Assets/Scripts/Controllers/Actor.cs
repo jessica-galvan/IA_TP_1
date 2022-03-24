@@ -11,7 +11,7 @@ public class Actor : MonoBehaviour, IDamagable
     [Header("Stats")]
     [SerializeField] protected ActorStats _actorStats;
     [SerializeField] protected AttackStats _attackStats;
-    protected Animator _animatorController;
+    protected Animator _animator;
 
     //PROPIEDADES
     public LifeController LifeController { get; private set; }
@@ -23,7 +23,7 @@ public class Actor : MonoBehaviour, IDamagable
     protected virtual void Awake()
     {
         LifeController = GetComponent<LifeController>();
-        _animatorController = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     protected virtual void Start()
@@ -36,6 +36,17 @@ public class Actor : MonoBehaviour, IDamagable
         LifeController.SetStats(_actorStats);
         LifeController.OnTakeDamage += OnTakeDamage;
         LifeController.OnDie += OnDeath;
+    }
+
+    protected virtual IDamagable[] CheckEnemyIsInRange()
+    {
+        //Raycasting? Overlap? Depends on the type of attack
+        return null;
+    }
+
+    protected virtual void OnAttack()
+    {
+        //???
     }
 
     protected virtual void OnTakeDamage()

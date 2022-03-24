@@ -8,11 +8,14 @@ public class AttackStats : ScriptableObject
     public LayerMask TargetList => _targetList;
     [SerializeField] private LayerMask _targetList;
 
-    public int Damage => _damage;
-    [SerializeField] private int _damage = 2;
+    public LayerMask ObstacleList => _obstacleList;
+    [SerializeField] private LayerMask _obstacleList;
 
     public float AttackRadious => attackRadious;
     [SerializeField] private float attackRadious = 1f;
+
+    public int Damage => _damage;
+    [SerializeField] private int _damage = 2;
 
     public float Cooldown => _cooldown;
     [SerializeField] private float _cooldown = 1f;

@@ -2,17 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerView : MonoBehaviour
+public class PlayerView : ActorView
 {
-    // Start is called before the first frame update
-    void Start()
+
+    protected override void SubscribeEvents()
     {
-        
+        base.SubscribeEvents();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void OnRun()
     {
-        
+        _animator?.SetTrigger("RunFoward");
+    }
+
+    protected virtual void OnAttack()
+    {
+        _animator?.SetTrigger("Attack01");
+    }
+
+    protected virtual void OnDefend()
+    {
+        _animator?.SetTrigger("Defend");
+
+    }
+
+    protected virtual void OnGetHit()
+    {
+        _animator?.SetTrigger("GetHit");
     }
 }

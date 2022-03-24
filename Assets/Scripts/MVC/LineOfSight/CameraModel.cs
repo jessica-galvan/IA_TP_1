@@ -8,7 +8,7 @@ public class CameraModel : MonoBehaviour
     public float angle = 90;
     public LayerMask maskObstacle;
     public LayerMask maskTargets;
-    public bool _isTargetDetected;
+    //public bool _isTargetDetected;
 
     public bool IsDetectedTargets {get; set ;}
 
