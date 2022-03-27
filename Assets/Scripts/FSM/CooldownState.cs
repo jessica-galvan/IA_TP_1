@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CooldownState<T> : State<T>
 {
-    float _time;
-    float _counter;
+    protected float _time;
+    protected float _counter;
     protected FSM<T> _fsm;
-    T _input;
+    protected T _input;
     public CooldownState(float time, FSM<T> fsm, T input)
     {
         _fsm = fsm;

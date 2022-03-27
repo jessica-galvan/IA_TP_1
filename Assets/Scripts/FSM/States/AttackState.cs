@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class AttackState<T> : CooldownState<T>
 {
-    private Actor _actor;
-    private T _inputWin;
-    public AttackState(Actor actor, float timeAttack, FSM<T> fsm, T input, T inputWin) : base(timeAttack, fsm, input)
+    private IAttack _model;
+
+    public AttackState(IAttack model, float timeAttack, FSM<T> fsm, T input) : base(timeAttack, fsm, input)
     {
-        _actor = actor;
-        _inputWin = inputWin;
+        _model = model;
     }
 
     public override void Init()
     {
         base.Init();
-        Debug.Log(_actor.name + " attack");
+        Debug.Log("attack");
         //TODO: CALL TO ATTACK ANIMATION
         //_actor.OnAttack();
         //_anim.Play("Capoeira");
@@ -23,19 +22,19 @@ public class AttackState<T> : CooldownState<T>
 
     public override void Execute()
     {
-        Debug.Log(_actor.name + " execute attack");
-        //TODO: CHECK ENEMY (Is in front of you? is in range? raycast or do if 
-        //var objs = _batman.CheckEnemies();
-        //if (objs != null && objs.Length > 0)
-        //{
-        //    for (int i = objs.Length - 1; i >= 0; i--)
-        //    {
-        //        _batman.Attack(objs[i]);
-        //    }
-        //    _fsm.Transition(_inputWin);
-        //}
+        Debug.Log( " execute attack");
 
-        _fsm.Transition(_inputWin);
+        var objs = _model.CheckTargetsInRadious();
+        if(objs != null && objs.Length > 0)
+        {
+            for (int i = objs.Length - 1; i >= 0; i--)
+            {
+                Debug.Log(objs[i].name + " was attacked");
+                _model.Attack();
+            }
+
+            _fsm.Transition(_input);
+        }
         base.Execute();
     }
 }

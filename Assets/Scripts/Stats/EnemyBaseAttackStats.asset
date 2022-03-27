@@ -9,10 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a24d5dc0450f247459f74e1f53fdd8d9, type: 3}
-  m_Name: PlayerActorStats
+  m_Script: {fileID: 11500000, guid: deb7650a65a02cb4eb72bd3e2f206dcb, type: 3}
+  m_Name: EnemyBaseAttackStats
   m_EditorClassIdentifier: 
-  _maxLife: 100
-  _speed: 5
-  _angleVision: 90
-  _rangeVision: 5
+  _targetList:
+    serializedVersion: 2
+    m_Bits: 64
+  _obstacleList:
+    serializedVersion: 2
+    m_Bits: 128
+  attackRadious: 5
+  _damage: 100
+  _cooldown: 1

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class ActorView : MonoBehaviour
+public abstract class EntityView : MonoBehaviour
 {
-    protected ActorModel _model;
+    protected EntityModel _model;
     protected Animator _animator;
 
     public Action OnDie;

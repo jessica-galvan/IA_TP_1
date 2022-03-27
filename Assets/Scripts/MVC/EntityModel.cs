@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LifeController))]
-
-public class ActorModel : MonoBehaviour
+public abstract class EntityModel : MonoBehaviour, IDamagable
 {
     [Header("Stats")]
     [SerializeField] protected ActorStats _actorStats;

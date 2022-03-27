@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBaseModel : ActorModel
+public class EnemyBaseModel : EntityModel, IAttack
 {
     public bool IsDetectedTargets { get; set; }
 
-    public Transform[] CheckTargetsInRadius() //Checks and Returns a List of Targets that are in the AOE attack radious
+    public Transform[] CheckTargetsInRadious() //Checks and Returns a List of Targets that are in the AOE attack radious
     {
         Collider[] colls = Physics.OverlapSphere(transform.position, _actorStats.RangeVision, _attackStats.TargetList);
         Transform[] targets = new Transform[colls.Length];
@@ -18,10 +18,9 @@ public class EnemyBaseModel : ActorModel
         return targets;
     }
 
-    public LifeController CheckTargetsInFront() //Checks and Returns a Target if is right in front of attack distance (foward, no AOE).
+    public bool CheckTargetInFront() //Checks if target is right in front of attack distance (foward, no AOE).
     {
-        //TODO: do raycasting to check
-        return null;
+        return Physics.Raycast(transform.position, transform.forward, _actorStats.RangeVision, _attackStats.TargetList);;
     }
 
     public bool LineOfSight(Transform target) //Check if Enemy Target is Visible (in angle, range and no obstacles).
@@ -44,4 +43,8 @@ public class EnemyBaseModel : ActorModel
         return true;
     }
 
+    public void Attack()
+    {
+        Debug.Log(" is attacking!!");
+    }
 }

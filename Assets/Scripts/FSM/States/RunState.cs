@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunState : MonoBehaviour
+public class RunState<T> : CooldownState<T>
 {
-    // Start is called before the first frame update
-    void Start()
+    private EntityModel _model;
+
+    public RunState(EntityModel model, float runTime, FSM<T> fsm, T input) : base(runTime, fsm, input)
     {
-        
+        _model = model;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Init()
     {
-        
+        base.Init();
+        Debug.Log(_model.name + " run");
     }
 }
