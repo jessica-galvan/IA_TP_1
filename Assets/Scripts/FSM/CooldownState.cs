@@ -6,13 +6,12 @@ public class CooldownState<T> : State<T>
 {
     protected float _time;
     protected float _counter;
-    protected FSM<T> _fsm;
-    protected T _input;
-    public CooldownState(float time, FSM<T> fsm, T input)
+    protected INode _root;
+
+    public CooldownState(float time, INode root)
     {
-        _fsm = fsm;
         _time = time;
-        _input = input;
+        _root = root;
     }
     public override void Init()
     {
@@ -23,7 +22,8 @@ public class CooldownState<T> : State<T>
         _counter -= Time.deltaTime;
         if (_counter <= 0)
         {
-            _fsm.Transition(_input);
+            _root.Execute();
+            _counter = _time;
         }
     }
 }

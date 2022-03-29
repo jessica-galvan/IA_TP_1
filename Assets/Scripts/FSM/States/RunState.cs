@@ -6,7 +6,7 @@ public class RunState<T> : CooldownState<T>
 {
     private EntityModel _model;
 
-    public RunState(EntityModel model, float runTime, FSM<T> fsm, T input) : base(runTime, fsm, input)
+    public RunState(EntityModel model, float runTime, INode root) : base(runTime, root)
     {
         _model = model;
     }

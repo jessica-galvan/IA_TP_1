@@ -6,7 +6,7 @@ public class AttackState<T> : CooldownState<T>
 {
     private IAttack _model;
 
-    public AttackState(IAttack model, float timeAttack, FSM<T> fsm, T input) : base(timeAttack, fsm, input)
+    public AttackState(IAttack model, float timeAttack, INode root) : base(timeAttack, root)
     {
         _model = model;
     }
@@ -33,7 +33,7 @@ public class AttackState<T> : CooldownState<T>
                 _model.Attack();
             }
 
-            _fsm.Transition(_input);
+            _root.Execute();
         }
         base.Execute();
     }

@@ -6,6 +6,8 @@ public class FSM<T>
 {
     IState<T> _current;
 
+    public IState<T> GetCurrentState => _current;
+
     public FSM()
     {
         //Constructor que inicia sin estado

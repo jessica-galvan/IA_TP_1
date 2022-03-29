@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 public class EnemyBaseModel : EntityModel, IAttack
 {
     public bool IsDetectedTargets { get; set; }
+    public Action OnActtack { get => _onAttack; set => _onAttack = value; }
+
+    private Action _onAttack = delegate { };
 
     public Transform[] CheckTargetsInRadious() //Checks and Returns a List of Targets that are in the AOE attack radious
     {
@@ -46,5 +50,6 @@ public class EnemyBaseModel : EntityModel, IAttack
     public void Attack()
     {
         Debug.Log(" is attacking!!");
+        //OnAttack?.Invoke();
     }
 }
