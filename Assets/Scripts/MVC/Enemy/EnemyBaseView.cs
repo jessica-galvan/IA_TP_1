@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class EnemyBaseView : EntityView
 {
-    protected EnemyBaseModel _model;
-
     //rigidbody  get component.
-
     //me suscribo a los eventos del model. 
     protected override void Awake()
     {
         base.Awake();
-        _model.OnActtack += AttackAnimation;
+    }
+
+    protected override void SubscribeEvents()
+    {
+        base.SubscribeEvents();
+
+        if(_model is IAttack)
+            (_model as IAttack).OnAttack += AttackAnimation;
     }
 
     private void AttackAnimation()

@@ -8,7 +8,7 @@ public class EnemyBaseController : EntityController
     protected enum states
     {
         Idle,
-        Run,
+        Patrol,
         Attack,
         Dead,
     }
@@ -19,6 +19,9 @@ public class EnemyBaseController : EntityController
     protected EnemyBaseView _view;
     protected FSM<states> _fsm;
     protected IState<states> _attackState;
+    protected IState<states> _idleState;
+    protected IState<states> _deadState;
+    protected IState<states> _patrolState;
     protected INode _rootNode;
 
     private void Awake()
@@ -32,15 +35,19 @@ public class EnemyBaseController : EntityController
     {
         INode dead = new ActionNode(()=> _fsm.Transition(states.Dead));
         INode idle = new ActionNode(() => _fsm.Transition(states.Idle));
-        INode run = new ActionNode(() => _fsm.Transition(states.Run));
+        INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol));
         INode attack = new ActionNode(() => _fsm.Transition(states.Attack));
 
-        //INode randomAction = new RandomNode(); //TODO: patrol or idle?
-        //INode qIsInAttackRange = new QuestionNode(_model.IsDetectedTargets,); //Si no esta en rango de ataque
-        //INode qLineOfSight = new QuestionNode(_model.LineOfSight, qIsInAttackRange, idle); 
-        //INode qIsDead = new QuestionNode(); //TODO: check if there is HP...
+        Dictionary<INode, int> random = new Dictionary<INode, int>();
+        random[idle] = 50;
+        random[patrol] = 50;
 
-        //_rootNode = qIsDead;
+        INode randomAction = new RandomNode(random);
+        INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,attack, randomAction); //Si no esta en rango de ataque
+        INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction);
+        INode qIsDead = new QuestionNode(()=>_model.LifeController.IsDead,dead, qLineOfSight);
+
+        _rootNode = qIsDead;
     }
 
     bool IsAttacking() //Para chequear si esta en el estado que corresponde, en caso de necesitar un qNode
@@ -48,24 +55,43 @@ public class EnemyBaseController : EntityController
         return _fsm.GetCurrentState == _attackState;
     }
 
+    bool CheckLineOfSight()
+    {
+        Transform[] targets = _model.CheckTargetsInRadious();
+        for (int i = targets.Length - 1; i >= 0; i--)
+        {
+            _model.LineOfSight(targets[i]);
+            return true;
+        }
+        return false;
+    }
+
+    bool CheckIsInAttackRange()
+    {
+        return _model.CheckTargetInFront();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
+    }
+
     void InitializedFSM()
     {
         _fsm = new FSM<states>();
 
         _attackState = new AttackState<states>(_model, time,_rootNode);
-        var idle = new IdleState<states>(_model, time, _rootNode);
-        var run = new RunState<states>(_model, time, _rootNode);
-        var dead = new DeadState<states>(_model, time);
+        _idleState = new IdleState<states>(_model, time, _rootNode);
+        _patrolState = new PatrolState<states>(_model, time, _rootNode);
+        _deadState = new DeadState<states>(_model, time);
 
-        _attackState.AddTransition(states.Dead, dead);
-        _attackState.AddTransition(states.Run, run);
+        _attackState.AddTransition(states.Dead, _deadState);
+        _attackState.AddTransition(states.Patrol, _patrolState);
+        _attackState.AddTransition(states.Idle, _idleState);
 
-        idle.AddTransition(states.Run, run);
-        idle.AddTransition(states.Dead, dead);
+        _idleState.AddTransition(states.Patrol, _patrolState);
+        _idleState.AddTransition(states.Attack, _attackState);
+        _idleState.AddTransition(states.Dead, _deadState);
 
-        run.AddTransition(states.Attack, _attackState);
+        _patrolState.AddTransition(states.Attack, _attackState);
+        _patrolState.AddTransition(states.Idle, _idleState);
 
-        _fsm.SetInit(idle);
+        _fsm.SetInit(_idleState);
     }
 
     void Update()

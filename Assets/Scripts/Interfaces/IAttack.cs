@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IAttack
 {
-    Action OnActtack { get; set; } 
+    Action OnAttack { get; set; } 
     Transform[] CheckTargetsInRadious();
     bool CheckTargetInFront();
     void Attack();

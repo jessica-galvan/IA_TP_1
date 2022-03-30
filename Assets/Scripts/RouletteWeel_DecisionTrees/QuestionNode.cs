@@ -19,6 +19,8 @@ public class QuestionNode : INode
     public QuestionNode(Func<bool> question, INode trueNode, INode falseNode) 
     {
         _question = question;
+        _trueNode = trueNode;
+        _falseNode = falseNode;
     }
 
     public void Execute() 

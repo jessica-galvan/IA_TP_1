@@ -15,4 +15,4 @@ MonoBehaviour:
   _maxLife: 100
   _speed: 5
   _angleVision: 90
-  _rangeVision: 5
+  _rangeVision: 2

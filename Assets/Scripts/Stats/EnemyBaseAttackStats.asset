@@ -17,7 +17,7 @@ MonoBehaviour:
     m_Bits: 64
   _obstacleList:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   attackRadious: 5
   _damage: 100
   _cooldown: 1

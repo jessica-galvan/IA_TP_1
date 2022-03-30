@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public abstract class EntityView : MonoBehaviour
 {
-    protected EntityModel _model;
+    protected IModel _model;
     protected Animator _animator;
 
     public Action OnDie;

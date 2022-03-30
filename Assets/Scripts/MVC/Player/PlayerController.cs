@@ -23,6 +23,11 @@ public class PlayerController : EntityController
         SubscribeEvents();
     }
 
+    private void Start()
+    {
+        GameManager.instance.SetPlayer(this);
+    }
+
     private void SubscribeEvents() //El input se recibe en el controller
     {
         //InputController.instance.OnMove += OnMove;

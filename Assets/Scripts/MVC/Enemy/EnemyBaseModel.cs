@@ -3,12 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBaseModel : EntityModel, IAttack
+public class EnemyBaseModel : EntityModel, IAttack, IModel
 {
+    //PROPIERTIES
     public bool IsDetectedTargets { get; set; }
-    public Action OnActtack { get => _onAttack; set => _onAttack = value; }
+    public Transform PlayerTarget { get; private set; }
 
+
+    //EVENTS
+    public Action OnAttack { get => _onAttack; set => _onAttack = value; }
     private Action _onAttack = delegate { };
+
+    public Action OnWalk { get => _onWalk; set => _onWalk = value; }
+    private Action _onWalk = delegate { };
+
+
+    protected override void Start()
+    {
+        base.Start();
+        GameManager.instance.OnPlayerInit += SetEnemyList;
+    }
+
+    private void SetEnemyList(Transform playerTarget)
+    {
+        GameManager.instance.OnPlayerInit -= SetEnemyList;
+        PlayerTarget = playerTarget;
+    }
 
     public Transform[] CheckTargetsInRadious() //Checks and Returns a List of Targets that are in the AOE attack radious
     {
@@ -24,7 +44,7 @@ public class EnemyBaseModel : EntityModel, IAttack
 
     public bool CheckTargetInFront() //Checks if target is right in front of attack distance (foward, no AOE).
     {
-        return Physics.Raycast(transform.position, transform.forward, _actorStats.RangeVision, _attackStats.TargetList);;
+        return Physics.Raycast(transform.position, transform.forward, _actorStats.RangeVision, _attackStats.TargetList);
     }
 
     public bool LineOfSight(Transform target) //Check if Enemy Target is Visible (in angle, range and no obstacles).
@@ -41,8 +61,8 @@ public class EnemyBaseModel : EntityModel, IAttack
             return false;
 
         //TARGET VIEW
-        if (Physics.Raycast(transform.position, diff.normalized, distance, _attackStats.ObstacleList))
-            return false;
+        //if (Physics.Raycast(transform.position, diff.normalized, distance, _attackStats.ObstacleList))
+        //    return false;
 
         return true;
     }
@@ -50,6 +70,15 @@ public class EnemyBaseModel : EntityModel, IAttack
     public void Attack()
     {
         Debug.Log(" is attacking!!");
-        //OnAttack?.Invoke();
+        OnAttack?.Invoke();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _actorStats.RangeVision);
+
+        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, _actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
+        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, -_actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
     }
 }

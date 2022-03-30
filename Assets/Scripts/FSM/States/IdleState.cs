@@ -13,6 +13,6 @@ public class IdleState<T> : CooldownState<T>
 
     public override void Init()
     {
-        Debug.Log(_model.gameObject.name + " IDLE");
+        Debug.Log("Idle");
     }
 }
