@@ -8,7 +8,7 @@ public class CooldownState<T> : State<T>
     protected float _counter;
     protected INode _root;
 
-    public CooldownState(float time, INode root)
+    public CooldownState(float time, INode root = null)
     {
         _time = time;
         _root = root;
@@ -22,8 +22,10 @@ public class CooldownState<T> : State<T>
         _counter -= Time.deltaTime;
         if (_counter <= 0)
         {
-            _root.Execute();
             _counter = _time;
+            if (_root != null)
+                _root.Execute();
+
         }
     }
 }

@@ -6,13 +6,14 @@ public class IdleState<T> : CooldownState<T>
 {
     private EntityModel _model;
 
-    public IdleState(EntityModel actor, float timeIdle, INode root) : base(timeIdle, root)
+    public IdleState(EntityModel actor, float timeIdle, INode root = null) : base(timeIdle, root)
     {
         _model = actor;
     }
 
     public override void Init()
     {
-        Debug.Log("Idle");
+        Debug.Log(_model.gameObject.name + " idle");
+        //TODO: call change animation to idle??
     }
 }

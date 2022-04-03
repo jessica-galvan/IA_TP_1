@@ -12,6 +12,6 @@ public class WinState<T> : State<T>
     public override void Init()
     {
         base.Init();
-        _anim.Play("Head Spinning");
+        //TODO: change this one for real win?
     }
 }

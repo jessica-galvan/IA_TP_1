@@ -62,7 +62,10 @@ public class InputController : MonoBehaviour
     private void CheckAttack()
     {
         if (Input.GetKeyDown(attack))
+        {
             OnAttack?.Invoke();
+        }
+
     }
     private void CheckDefend()
     {

@@ -16,6 +16,11 @@ public abstract class EntityView : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    protected  virtual void Start()
+    {
+        SubscribeEvents();
+    }
+
     protected virtual void SubscribeEvents()
     {
         _model.LifeController.OnTakeDamage += OnTakeDamage;
@@ -24,7 +29,7 @@ public abstract class EntityView : MonoBehaviour
 
     protected virtual void OnIdle()
     {
-        _animator?.SetTrigger("Idle");
+        _animator?.Play("Idle");
     }
 
     protected virtual void OnTakeDamage()
@@ -40,5 +45,11 @@ public abstract class EntityView : MonoBehaviour
     protected virtual void DeathAnimationOver()
     {
         OnDie?.Invoke();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        _model.LifeController.OnTakeDamage -= OnTakeDamage;
+        _model.LifeController.OnDie -= OnDeath;
     }
 }

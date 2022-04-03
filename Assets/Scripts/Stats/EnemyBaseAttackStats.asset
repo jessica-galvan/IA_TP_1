@@ -20,4 +20,4 @@ MonoBehaviour:
     m_Bits: 0
   attackRadious: 5
   _damage: 100
-  _cooldown: 1
+  _cooldown: 10

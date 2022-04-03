@@ -31,8 +31,9 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
         InitStats();
     }
 
-    protected void InitStats()
+    protected virtual void InitStats()
     {
         LifeController.SetStats(_actorStats);
     }
+
 }

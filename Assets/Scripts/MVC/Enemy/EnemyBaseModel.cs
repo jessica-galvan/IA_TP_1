@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class EnemyBaseModel : EntityModel, IAttack, IModel
 {
+    //Variables
+    protected float cooldownTimer;
+
     //PROPIERTIES
     public bool IsDetectedTargets { get; set; }
+    public bool CanAttack { get; private set; }
     public Transform PlayerTarget { get; private set; }
-
 
     //EVENTS
     public Action OnAttack { get => _onAttack; set => _onAttack = value; }
@@ -17,11 +20,30 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
     public Action OnWalk { get => _onWalk; set => _onWalk = value; }
     private Action _onWalk = delegate { };
 
-
     protected override void Start()
     {
         base.Start();
         GameManager.instance.OnPlayerInit += SetEnemyList;
+    }
+
+    protected virtual void Update()
+    {
+        CheckCanAttack();
+    }
+
+    protected void CheckCanAttack()
+    {
+        if (!CanAttack)
+        {
+            if (cooldownTimer > 0)
+                cooldownTimer -= Time.deltaTime;
+            else
+            {
+                CanAttack = true;
+                print("can attack again");
+            }
+                
+        }
     }
 
     private void SetEnemyList(Transform playerTarget)
@@ -69,8 +91,13 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
 
     public void Attack()
     {
-        Debug.Log(" is attacking!!");
-        OnAttack?.Invoke();
+        if (CanAttack)
+        {
+            print("Va a atacar");
+            CanAttack = false;
+            cooldownTimer = _attackStats.Cooldown;
+            OnAttack?.Invoke();
+        }
     }
 
     private void OnDrawGizmos()

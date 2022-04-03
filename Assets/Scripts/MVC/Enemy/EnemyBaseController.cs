@@ -43,7 +43,8 @@ public class EnemyBaseController : EntityController
         random[patrol] = 50;
 
         INode randomAction = new RandomNode(random);
-        INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,attack, randomAction); //Si no esta en rango de ataque
+        INode qCanAttack = new QuestionNode(() => _model.CanAttack, attack, idle);
+        INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,qCanAttack, randomAction); //Si no esta en rango de ataque
         INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction);
         INode qIsDead = new QuestionNode(()=>_model.LifeController.IsDead,dead, qLineOfSight);
 

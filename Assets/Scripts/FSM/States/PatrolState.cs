@@ -6,7 +6,7 @@ public class PatrolState<T> : CooldownState<T>
 {
     private EntityModel _model;
 
-    public PatrolState(EntityModel model, float runTime, INode root) : base(runTime, root)
+    public PatrolState(EntityModel model, float runTime, INode root = null) : base(runTime, root)
     {
         _model = model;
     }
@@ -14,6 +14,6 @@ public class PatrolState<T> : CooldownState<T>
     public override void Init()
     {
         base.Init();
-        Debug.Log("Patrol");
+        //TODO: call change animation to walk/run + initialized patrol route in enemies
     }
 }

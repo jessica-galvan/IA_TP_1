@@ -6,7 +6,7 @@ public class AttackState<T> : CooldownState<T>
 {
     private IAttack _model;
 
-    public AttackState(IAttack model, float timeAttack, INode root) : base(timeAttack, root)
+    public AttackState(IAttack model, float timeAttack, INode root = null) : base(timeAttack, root)
     {
         _model = model;
     }
@@ -14,16 +14,16 @@ public class AttackState<T> : CooldownState<T>
     public override void Init()
     {
         base.Init();
-        Debug.Log("attack");
-        //TODO: CALL TO ATTACK ANIMATION
-        //_actor.OnAttack();
-        //_anim.Play("Capoeira");
+        _model.Attack();
+    }
+
+    public void OnAttack()
+    {
+        //TODO: do subscribe to the event that happens when the attack SHOULD happend, do the damage in THAT moment only and then unsubscribe after it finishes doing it.
     }
 
     public override void Execute()
     {
-        Debug.Log( " execute attack");
-
         var objs = _model.CheckTargetsInRadious();
         if(objs != null && objs.Length > 0)
         {
@@ -33,7 +33,8 @@ public class AttackState<T> : CooldownState<T>
                 _model.Attack();
             }
 
-            _root.Execute();
+            if (_root != null)
+                _root.Execute();
         }
         base.Execute();
     }

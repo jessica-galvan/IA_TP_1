@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,49 +14,108 @@ public class PlayerController : EntityController
         Win
     }
 
-    private PlayerModel __player;
-    //private FSM<states> _fsm;
+    [SerializeField] private float _time = 5f;
+    private PlayerModel _model;
+    
+    //FMS
+    private FSM<states> _fsm;
+    private IState<states> _attackState;
+    private IState<states> _idleState;
+    private IState<states> _deadState;
+    private IState<states> _runState;
+
+    //EVENTS
+    public Action OnAttack;
+    public Action<float, float> OnMove;
+    public Action OnDefend;
 
     void Awake()
     {
-        __player = GetComponent<PlayerModel>();
+        _model = GetComponent<PlayerModel>();
         InitializedFSM();
-        SubscribeEvents();
+
     }
 
     private void Start()
     {
-        GameManager.instance.SetPlayer(this);
+        //GameManager.instance.SetPlayer(this);
+        SubscribeEvents();
     }
 
     private void SubscribeEvents() //El input se recibe en el controller
     {
-        //InputController.instance.OnMove += OnMove;
-        //InputController.instance.OnAttack += OnShoot;
+        InputController.instance.OnMove += Move;
+        InputController.instance.OnAttack += Attack;
         //InputController.instance.OnJump += OnJump;
-        //InputController.instance.Defend += OnDefend;
+        //InputController.instance.OnDefend += OnDefend;
     }
 
     private void InitializedFSM()
     {
-        //_fsm = new FSM<states>();
+        _fsm = new FSM<states>();
 
-        //var dizzy = new DizzyState<states>(_batman, anim, dizzyTime, _fsm, states.Capoeira, states.Dead);
-        //var capoeira = new CapoeiraState<states>(_batman, anim, attackTime, _fsm, states.Dizzy, states.win);
-        //var dead = new DeadState<states>(_batman.gameObject, deadTime, anim);
-        //var win = new WinState<states>(anim);
+        _attackState = new AttackState<states>(_model, _time);
+        _idleState = new IdleState<states>(_model, _time);
+        _runState = new PatrolState<states>(_model, _time);
+        _deadState = new DeadState<states>(_model, _time);
 
-        //dizzy.AddTransition(states.Dead, dead);
-        //dizzy.AddTransition(states.Capoeira, capoeira);
+        _attackState.AddTransition(states.Dead, _deadState);
+        _attackState.AddTransition(states.Run, _runState);
+        _attackState.AddTransition(states.Idle, _idleState);
 
-        //capoeira.AddTransition(states.Dizzy, dizzy);
-        //capoeira.AddTransition(states.win, win);
+        _idleState.AddTransition(states.Run, _runState);
+        _idleState.AddTransition(states.Attack, _attackState);
+        _idleState.AddTransition(states.Dead, _deadState);
 
-        //_fsm.SetInit(capoeira);
+        _runState.AddTransition(states.Attack, _attackState);
+        _runState.AddTransition(states.Idle, _idleState);
+
+        _fsm.SetInit(_idleState);
     }
 
     void Update()
     {
-        //_fsm.OnUpdate();
+        _fsm.OnUpdate();
+    }
+
+    private void Move(float x, float y)
+    {
+        OnMove?.Invoke(x, y);
+        if (_fsm.GetCurrentState != _runState)
+        {
+            _fsm.Transition(states.Run);
+        }
+
+    }
+
+    private void Attack()
+    {
+        if (_fsm.GetCurrentState != _attackState)
+        {
+            print("attack");
+            _fsm.Transition(states.Attack);
+            OnAttack?.Invoke();
+        }
+
+    }
+
+    //private void Defend()
+    //{
+    //    OnDefend?.Invoke();
+    //    if (_fsm.GetCurrentState != _defendState)
+    //      _fsm.Transition(states.Defend);
+    //}
+
+    //private void Jump()
+    //{
+    //    OnJump?.Invoke();
+    //}
+
+    private void OnDestroy()
+    {
+        InputController.instance.OnMove -= Move;
+        InputController.instance.OnAttack -= Attack;
+        //InputController.instance.OnJump -= OnJump;
+        //InputController.instance.OnDefend -= OnDefend;
     }
 }
