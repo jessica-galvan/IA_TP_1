@@ -15,7 +15,6 @@ public class PlayerController : EntityController
     }
 
     [SerializeField] private float _time = 5f;
-    private PlayerModel _model;
     
     //FMS
     private FSM<states> _fsm;
@@ -54,7 +53,7 @@ public class PlayerController : EntityController
     {
         _fsm = new FSM<states>();
 
-        _attackState = new AttackState<states>(_model, _time);
+        _attackState = new AttackState<states>((_model as IAttack), _time);
         _idleState = new IdleState<states>(_model, _time);
         _runState = new PatrolState<states>(_model, _time);
         _deadState = new DeadState<states>(_model, _time);
@@ -69,6 +68,7 @@ public class PlayerController : EntityController
 
         _runState.AddTransition(states.Attack, _attackState);
         _runState.AddTransition(states.Idle, _idleState);
+        _runState.AddTransition(states.Dead, _deadState);
 
         _fsm.SetInit(_idleState);
     }
@@ -80,7 +80,9 @@ public class PlayerController : EntityController
 
     private void Move(float x, float y)
     {
-        OnMove?.Invoke(x, y);
+        //OnMove?.Invoke(x, y)
+        
+        (_model as IMove).Move(x, y);
         if (_fsm.GetCurrentState != _runState)
         {
             _fsm.Transition(states.Run);
@@ -92,7 +94,6 @@ public class PlayerController : EntityController
     {
         if (_fsm.GetCurrentState != _attackState)
         {
-            print("attack");
             _fsm.Transition(states.Attack);
             OnAttack?.Invoke();
         }

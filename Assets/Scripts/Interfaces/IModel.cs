@@ -12,5 +12,7 @@ public interface IModel
     Action OnIdle { get;}
     Action OnDie { get; }
 
+    void IdleAnimation();
+
 }
 

@@ -25,10 +25,10 @@ public class EnemyBaseView : EntityView
 
     private void AttackAnimation()
     {
-        if (!_animator.GetAnimatorTransitionInfo(0).IsName("attack01"))
+        if (!_animator.GetAnimatorTransitionInfo(0).IsName("attack00"))
         {
-            print("recibi orden ataque");
-            _animator.SetTrigger("Attack");
+            //_animator.SetTrigger("Attack");
+            _animator.Play("attack00");
         }
 
     }

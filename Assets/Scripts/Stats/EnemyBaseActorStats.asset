@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a24d5dc0450f247459f74e1f53fdd8d9, type: 3}
   m_Name: EnemyBaseActorStats
   m_EditorClassIdentifier: 
-  _maxLife: 100
+  _maxLife: 5
   _speed: 5
-  _angleVision: 90
-  _rangeVision: 2
+  _angleVision: 180
+  _rangeVision: 5

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PatrolState<T> : CooldownState<T>
 {
-    private EntityModel _model;
+    private IModel _model;
 
-    public PatrolState(EntityModel model, float runTime, INode root = null) : base(runTime, root)
+    public PatrolState(IModel model, float runTime, INode root = null) : base(runTime, root)
     {
         _model = model;
     }

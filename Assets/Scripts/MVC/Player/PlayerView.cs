@@ -17,17 +17,18 @@ public class PlayerView : EntityView
     {
         base.SubscribeEvents();
         _controller.OnAttack += AttackAnimation;
-        _controller.OnMove += RunAnimation;
+
+        if (_model is IMove)
+            (_model as IMove).OnMove += RunAnimation;
     }
 
-    protected virtual void RunAnimation(float x, float y)
+    protected virtual void RunAnimation(bool value)
     {
-        _animator?.SetBool("Run", x > 0 || y > 0);
+        _animator?.SetBool("Run", value);
     }
 
     protected virtual void AttackAnimation()
     {
-        print("ANIMATION");
         _animator?.SetTrigger("Attack");
     }
 
@@ -44,6 +45,9 @@ public class PlayerView : EntityView
 
     protected override void OnDestroy()
     {
+        if (_model is IMove)
+            (_model as IMove).OnMove -= RunAnimation;
+
         base.OnDestroy();
     }
 }

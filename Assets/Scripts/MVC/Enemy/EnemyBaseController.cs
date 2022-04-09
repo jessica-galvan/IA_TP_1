@@ -15,7 +15,6 @@ public class EnemyBaseController : EntityController
 
     [SerializeField] protected float time = 5f;
 
-    protected EnemyBaseModel _model;
     protected EnemyBaseView _view;
     protected FSM<states> _fsm;
     protected IState<states> _attackState;
@@ -43,7 +42,7 @@ public class EnemyBaseController : EntityController
         random[patrol] = 50;
 
         INode randomAction = new RandomNode(random);
-        INode qCanAttack = new QuestionNode(() => _model.CanAttack, attack, idle);
+        INode qCanAttack = new QuestionNode(() => (_model as IAttack).CanAttack, attack, idle);
         INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,qCanAttack, randomAction); //Si no esta en rango de ataque
         INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction);
         INode qIsDead = new QuestionNode(()=>_model.LifeController.IsDead,dead, qLineOfSight);
@@ -58,25 +57,33 @@ public class EnemyBaseController : EntityController
 
     bool CheckLineOfSight()
     {
-        Transform[] targets = _model.CheckTargetsInRadious();
-        for (int i = targets.Length - 1; i >= 0; i--)
-        {
-            _model.LineOfSight(targets[i]);
-            return true;
+        if(_model is IAttack) 
+        {      
+            Transform[] targets = (_model as EnemyBaseModel).CheckTargetsInRadious();
+            for (int i = targets.Length - 1; i >= 0; i--)
+            {
+                if(_model is ILineOfSight)
+                {
+                    (_model as ILineOfSight).LineOfSight(targets[i]);
+                    return true;
+                }
+            }
         }
         return false;
     }
 
     bool CheckIsInAttackRange()
     {
-        return _model.CheckTargetInFront();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
+        if(_model is IAttack)
+            return (_model as EnemyBaseModel).CheckTargetInFront();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
+        return false;
     }
 
     void InitializedFSM()
     {
         _fsm = new FSM<states>();
 
-        _attackState = new AttackState<states>(_model, time,_rootNode);
+        _attackState = new AttackState<states>((_model as IAttack), time,_rootNode);
         _idleState = new IdleState<states>(_model, time, _rootNode);
         _patrolState = new PatrolState<states>(_model, time, _rootNode);
         _deadState = new DeadState<states>(_model, time);
@@ -98,6 +105,8 @@ public class EnemyBaseController : EntityController
     void Update()
     {
         _fsm.OnUpdate();
+        if (IsAttacking())
+            print("enemigo ataca");
     }
 
     //async void WaitForDeadEnemies() //Esto es para hacer una funcion asincronica. Podria ir en el bailecito de los enemigos luego de que destruyan a Crash. Esto es porque el destroy se hace en un frame mas tarde
@@ -105,4 +114,11 @@ public class EnemyBaseController : EntityController
     //    await Task.Delay(100);
     //    _rootNode.Execute();
     //}
+
+    bool CheckDistance()
+    {
+        //TODO: check if player is in range of attack.
+        //state of pursit llama a esta funcion, si da true, que llame de nuevo al arbol!
+        return false;
+    }
 }

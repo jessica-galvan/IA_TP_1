@@ -36,4 +36,9 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
         LifeController.SetStats(_actorStats);
     }
 
+    public virtual void IdleAnimation()
+    {
+        OnIdle?.Invoke();
+    }
+
 }

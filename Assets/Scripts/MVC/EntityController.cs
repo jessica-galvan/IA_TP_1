@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class EntityController : MonoBehaviour
 {
-    //private EntityModel _model;
+    protected IModel _model;
 
     //protected virtual void Awake()
     //{

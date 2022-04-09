@@ -7,7 +7,5 @@ public interface IAttack
 {
     bool CanAttack { get;}
     Action OnAttack { get; set; } 
-    Transform[] CheckTargetsInRadious();
-    bool CheckTargetInFront();
     void Attack();
 }

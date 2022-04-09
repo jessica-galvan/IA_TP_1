@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class IdleState<T> : CooldownState<T>
 {
-    private EntityModel _model;
+    private IModel _model;
 
-    public IdleState(EntityModel actor, float timeIdle, INode root = null) : base(timeIdle, root)
+    public IdleState(IModel actor, float timeIdle, INode root = null) : base(timeIdle, root)
     {
         _model = actor;
     }
 
     public override void Init()
     {
-        Debug.Log(_model.gameObject.name + " idle");
+        
+        //Debug.Log(_model.gameObject.name + " idle");
+        _model.IdleAnimation();
         //TODO: call change animation to idle??
     }
 }

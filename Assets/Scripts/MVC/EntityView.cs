@@ -25,9 +25,10 @@ public abstract class EntityView : MonoBehaviour
     {
         _model.LifeController.OnTakeDamage += OnTakeDamage;
         _model.LifeController.OnDie += OnDeath;
+        //_model.OnIdle += Idle;
     }
 
-    protected virtual void OnIdle()
+    protected virtual void Idle()
     {
         _animator?.Play("Idle");
     }

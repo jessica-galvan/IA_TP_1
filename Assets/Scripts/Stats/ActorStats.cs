@@ -7,7 +7,7 @@ public class ActorStats : ScriptableObject //FLYWEIGTH
 {
     public int MaxLife => _maxLife;
     [SerializeField] private int _maxLife = 100;
-    public float OriginalSpeed => _speed;
+    public float Speed => _speed;
     [SerializeField] private float _speed = 5f;
     public float AngleVision => _angleVision;
     [SerializeField] private float _angleVision;

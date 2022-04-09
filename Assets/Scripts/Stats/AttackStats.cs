@@ -19,4 +19,7 @@ public class AttackStats : ScriptableObject
 
     public float Cooldown => _cooldown;
     [SerializeField] private float _cooldown = 1f;
+
+    public float AttackDelay => _attackDelay;
+    [SerializeField] private float _attackDelay = 1f;
 }

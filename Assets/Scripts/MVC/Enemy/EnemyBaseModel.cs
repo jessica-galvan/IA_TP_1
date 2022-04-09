@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBaseModel : EntityModel, IAttack, IModel
+//[RequireComponent(typeof(Rigidbody))]
+public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 {
     //Variables
     protected float cooldownTimer;
+    protected Rigidbody _rb;
 
     //PROPIERTIES
     public bool IsDetectedTargets { get; set; }
@@ -19,6 +21,12 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
 
     public Action OnWalk { get => _onWalk; set => _onWalk = value; }
     private Action _onWalk = delegate { };
+
+    protected override void Awake()
+    {
+        base.Awake();
+        //_rb = GetComponent<Rigidbody>();
+    }
 
     protected override void Start()
     {
@@ -38,11 +46,7 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
             if (cooldownTimer > 0)
                 cooldownTimer -= Time.deltaTime;
             else
-            {
                 CanAttack = true;
-                print("can attack again");
-            }
-                
         }
     }
 
@@ -64,7 +68,7 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
         return targets;
     }
 
-    public bool CheckTargetInFront() //Checks if target is right in front of attack distance (foward, no AOE).
+    public bool CheckTargetInFront() //TODO: rework or erase. Only for physical! Checks if target is right in front of attack distance (foward, no AOE).
     {
         return Physics.Raycast(transform.position, transform.forward, _actorStats.RangeVision, _attackStats.TargetList);
     }
@@ -83,8 +87,8 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
             return false;
 
         //TARGET VIEW
-        //if (Physics.Raycast(transform.position, diff.normalized, distance, _attackStats.ObstacleList))
-        //    return false;
+        if (Physics.Raycast(transform.position, diff.normalized, distance, _attackStats.ObstacleList))
+            return false;
 
         return true;
     }
@@ -93,11 +97,17 @@ public class EnemyBaseModel : EntityModel, IAttack, IModel
     {
         if (CanAttack)
         {
-            print("Va a atacar");
             CanAttack = false;
             cooldownTimer = _attackStats.Cooldown;
             OnAttack?.Invoke();
+            StartCoroutine(WaitToAttack());
         }
+    }
+
+    private IEnumerator WaitToAttack()
+    {
+        yield return new WaitForSeconds(_attackStats.AttackDelay);
+        //TODO: Hacer que haga el ataque (instancie o fisico) 
     }
 
     private void OnDrawGizmos()

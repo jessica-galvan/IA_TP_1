@@ -17,25 +17,23 @@ public class AttackState<T> : CooldownState<T>
         _model.Attack();
     }
 
-    public void OnAttack()
-    {
-        //TODO: do subscribe to the event that happens when the attack SHOULD happend, do the damage in THAT moment only and then unsubscribe after it finishes doing it.
-    }
-
     public override void Execute()
     {
-        var objs = _model.CheckTargetsInRadious();
-        if(objs != null && objs.Length > 0)
-        {
-            for (int i = objs.Length - 1; i >= 0; i--)
-            {
-                Debug.Log(objs[i].name + " was attacked");
-                _model.Attack();
-            }
+        //For now, do nothing
 
-            if (_root != null)
-                _root.Execute();
-        }
+
+        //var objs = _model.CheckTargetsInRadious();
+        //if(objs != null && objs.Length > 0)
+        //{
+        //    for (int i = objs.Length - 1; i >= 0; i--)
+        //    {
+        //        //Debug.Log(objs[i].name + " was attacked");
+        //        //_model.Attack();
+        //    }
+
+        //    if (_root != null)
+        //        _root.Execute();
+        //}
         base.Execute();
     }
 }
