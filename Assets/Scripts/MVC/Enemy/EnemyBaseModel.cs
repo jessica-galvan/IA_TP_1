@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 {
     //Variables
@@ -25,7 +25,7 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
     protected override void Awake()
     {
         base.Awake();
-        //_rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     protected override void Start()

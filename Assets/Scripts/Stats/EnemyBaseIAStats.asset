@@ -17,3 +17,7 @@ MonoBehaviour:
     m_Bits: 512
   _angleAvoidance: 270
   _rangeAvoidance: 2
+  _steeringWeight: 1
+  _avoidanceWeight: 1
+  _timePrediction: 5
+  _maxDistanceFromTarget: 5

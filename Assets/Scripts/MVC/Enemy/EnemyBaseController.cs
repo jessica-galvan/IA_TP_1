@@ -8,12 +8,14 @@ public class EnemyBaseController : EntityController
     protected enum states
     {
         Idle,
-        Patrol,
+        Patrol, //Patrol is walking around an area, no chasing or any other steering behaviour
+        GetHit,
+        Steering,
         Attack,
         Dead,
     }
 
-    [SerializeField] protected float time = 5f;
+    [SerializeField] protected float timeTree = 1f;
 
     protected EnemyBaseView _view;
     protected FSM<states> _fsm;
@@ -22,20 +24,23 @@ public class EnemyBaseController : EntityController
     protected IState<states> _deadState;
     protected IState<states> _patrolState;
     protected INode _rootNode;
+    protected Transform _target;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _model = GetComponent<EnemyBaseModel>();
         InitializedTree();
         InitializedFSM();
     }
 
-    void InitializedTree()
+    protected virtual void InitializedTree()
     {
         INode dead = new ActionNode(()=> _fsm.Transition(states.Dead));
+        INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit));
         INode idle = new ActionNode(() => _fsm.Transition(states.Idle));
-        INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol));
         INode attack = new ActionNode(() => _fsm.Transition(states.Attack));
+        INode steering = new ActionNode(() => _fsm.Transition(states.Steering));
+        INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol)); 
 
         Dictionary<INode, int> random = new Dictionary<INode, int>();
         random[idle] = 50;
@@ -50,12 +55,7 @@ public class EnemyBaseController : EntityController
         _rootNode = qIsDead;
     }
 
-    bool IsAttacking() //Para chequear si esta en el estado que corresponde, en caso de necesitar un qNode
-    {
-        return _fsm.GetCurrentState == _attackState;
-    }
-
-    bool CheckLineOfSight()
+    protected bool CheckLineOfSight()
     {
         if(_model is IAttack) 
         {      
@@ -72,21 +72,21 @@ public class EnemyBaseController : EntityController
         return false;
     }
 
-    bool CheckIsInAttackRange()
+    protected bool CheckIsInAttackRange()
     {
         if(_model is IAttack)
             return (_model as EnemyBaseModel).CheckTargetInFront();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
         return false;
     }
 
-    void InitializedFSM()
+    protected virtual void InitializedFSM()
     {
         _fsm = new FSM<states>();
 
-        _attackState = new AttackState<states>((_model as IAttack), time,_rootNode);
-        _idleState = new IdleState<states>(_model, time, _rootNode);
-        _patrolState = new PatrolState<states>(_model, time, _rootNode);
-        _deadState = new DeadState<states>(_model, time);
+        _attackState = new AttackState<states>((_model as IAttack), timeTree,_rootNode);
+        _idleState = new IdleState<states>(_model, timeTree, _rootNode);
+        _patrolState = new PatrolState<states>(_model, timeTree, _rootNode);
+        _deadState = new DeadState<states>(_model, timeTree);
 
         _attackState.AddTransition(states.Dead, _deadState);
         _attackState.AddTransition(states.Patrol, _patrolState);
@@ -102,11 +102,9 @@ public class EnemyBaseController : EntityController
         _fsm.SetInit(_idleState);
     }
 
-    void Update()
+    protected void Update()
     {
         _fsm.OnUpdate();
-        if (IsAttacking())
-            print("enemigo ataca");
     }
 
     //async void WaitForDeadEnemies() //Esto es para hacer una funcion asincronica. Podria ir en el bailecito de los enemigos luego de que destruyan a Crash. Esto es porque el destroy se hace en un frame mas tarde
@@ -115,7 +113,7 @@ public class EnemyBaseController : EntityController
     //    _rootNode.Execute();
     //}
 
-    bool CheckDistance()
+    protected bool CheckDistance()
     {
         //TODO: check if player is in range of attack.
         //state of pursit llama a esta funcion, si da true, que llame de nuevo al arbol!

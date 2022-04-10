@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerModel : EntityModel, IAttack, IMove
+public class PlayerModel : EntityModel, IAttack, ITarget
 {
     //Variables
     [SerializeField] private Vector3 offsetToCenter = new Vector3(0, 0.5f, 0);
@@ -15,7 +15,7 @@ public class PlayerModel : EntityModel, IAttack, IMove
     //PROPIERTIES
     public bool CanAttack { get; private set; }
 
-    public float GetVel => _rb.velocity.magnitude;
+    public float Velocity => _rb.velocity.magnitude;
 
     public Vector3 GetFoward => transform.forward;
 
@@ -63,11 +63,13 @@ public class PlayerModel : EntityModel, IAttack, IMove
 
     public void Move(float x, float z)
     {
-
         Vector3 direction = new Vector3(x, 0f, z).normalized;
 
-        _rb.velocity = direction * _actorStats.Speed;
-        transform.forward = Vector3.Lerp(transform.forward, direction, turnSpeed);
+        if(direction.magnitude >= 0.1f)
+        {
+            _rb.velocity = direction * _actorStats.Speed;
+            transform.forward = Vector3.Lerp(transform.forward, direction, turnSpeed);
+        }
 
         OnMove?.Invoke(direction.magnitude >= 0.1f);
     }

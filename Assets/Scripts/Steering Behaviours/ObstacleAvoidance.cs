@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ObstacleAvoidance : ISteering
 {
-    IArtificial _stats;
+    IArtificialMovement _stats;
    
-    public ObstacleAvoidance(IArtificial stats)
+    public ObstacleAvoidance(IArtificialMovement stats)
     {
         _stats = stats;
     }

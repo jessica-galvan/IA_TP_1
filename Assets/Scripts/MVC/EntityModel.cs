@@ -18,6 +18,9 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     public Action OnIdle { get => _onIdle; set => _onIdle = value; }
     private Action _onIdle = delegate { };
 
+    public Action OnHit{ get => _onHit; set => _onHit = value; }
+    private Action _onHit = delegate { };
+
     public Action OnDie { get => _onDie; set => _onDie = value; }
     private Action _onDie = delegate { };
 
@@ -39,6 +42,11 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     public virtual void IdleAnimation()
     {
         OnIdle?.Invoke();
+    }
+
+    public virtual void GetHitAnimation()
+    {
+        OnHit?.Invoke();
     }
 
 }

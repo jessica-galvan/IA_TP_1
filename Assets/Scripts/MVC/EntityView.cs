@@ -23,9 +23,8 @@ public abstract class EntityView : MonoBehaviour
 
     protected virtual void SubscribeEvents()
     {
-        _model.LifeController.OnTakeDamage += OnTakeDamage;
-        _model.LifeController.OnDie += OnDeath;
-        //_model.OnIdle += Idle;
+        //_model.LifeController.OnTakeDamage += OnTakeDamage;
+        //_model.LifeController.OnDie += OnDeath;
     }
 
     protected virtual void Idle()

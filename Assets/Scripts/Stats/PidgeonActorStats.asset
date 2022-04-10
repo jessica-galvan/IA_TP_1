@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLife: 100
   _speed: 5
-  _angleVision: 0
-  _rangeVision: 0
+  _angleVision: 270
+  _rangeVision: 5

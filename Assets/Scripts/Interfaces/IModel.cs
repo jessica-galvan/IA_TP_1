@@ -9,10 +9,13 @@ public interface IModel
     public ActorStats ActorStats { get; }
     public AttackStats AttackStats { get; }
 
-    Action OnIdle { get;}
+    Action OnIdle { get; }
     Action OnDie { get; }
+    Action OnHit { get; }
 
     void IdleAnimation();
+
+    void GetHitAnimation();
 
 }
 

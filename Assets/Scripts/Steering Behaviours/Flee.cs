@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class Flee : ISteering
 {
-    Transform _entity;
-    Transform _target;
+    ITarget _target;
+    IArtificialMovement _entity;
 
-    public Flee(Transform entity, Transform target)
+    public Flee(IArtificialMovement entity)
     {
         _entity = entity;
-        SetTarget(target);
+        SetTarget(_entity.Target);
+        Debug.Log("hola");
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(ITarget newTarget)
     {
         _target = newTarget;
     }
 
     public Vector3 GetDir()
     {
-        if (_target != null)
+        if (_target == null)
             return Vector3.zero;
 
-        Vector3 dir = _entity.position - _target.position;
+        Vector3 dir = _entity.transform.position - _target.transform.position;
         return dir.normalized;
     }
 }

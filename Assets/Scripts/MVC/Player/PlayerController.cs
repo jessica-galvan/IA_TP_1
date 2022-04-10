@@ -28,21 +28,21 @@ public class PlayerController : EntityController
     public Action<float, float> OnMove;
     public Action OnDefend;
 
-    void Awake()
+    protected override void Awake()
     {
         _model = GetComponent<PlayerModel>();
         InitializedFSM();
-
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         //GameManager.instance.SetPlayer(this);
-        SubscribeEvents();
     }
 
-    private void SubscribeEvents() //El input se recibe en el controller
+    protected override void SubscribeEvents() //El input se recibe en el controller
     {
+        base.SubscribeEvents();
         InputController.instance.OnMove += Move;
         InputController.instance.OnAttack += Attack;
         //InputController.instance.OnJump += OnJump;
@@ -78,16 +78,16 @@ public class PlayerController : EntityController
         _fsm.OnUpdate();
     }
 
-    private void Move(float x, float y)
-    {
-        //OnMove?.Invoke(x, y)
-        
-        (_model as IMove).Move(x, y);
+    private void Move(float x, float y) //TODO: Make player stop moving when attacking
+    {   
+
         if (_fsm.GetCurrentState != _runState)
         {
             _fsm.Transition(states.Run);
         }
 
+        if (_fsm.GetCurrentState == _runState) //if the character is running, the move. Because else, it moves when attacking
+            (_model as ITarget).Move(x, y);
     }
 
     private void Attack()
@@ -97,7 +97,6 @@ public class PlayerController : EntityController
             _fsm.Transition(states.Attack);
             OnAttack?.Invoke();
         }
-
     }
 
     //private void Defend()
@@ -112,8 +111,9 @@ public class PlayerController : EntityController
     //    OnJump?.Invoke();
     //}
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         InputController.instance.OnMove -= Move;
         InputController.instance.OnAttack -= Attack;
         //InputController.instance.OnJump -= OnJump;

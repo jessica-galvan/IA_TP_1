@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class Escape : ISteering
 {
-    Transform _entity;
-    Transform _target;
+    IArtificialMovement _entity;
+    ITarget _target;
 
-    public Escape(Transform entity, Transform target)
+    public Escape(IArtificialMovement  entity)
     {
         _entity = entity;
-        SetTarget(target);
+        SetTarget(_entity.Target);
     }
 
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(ITarget newTarget)
     {
         _target = newTarget;
     }
 
     public Vector3 GetDir()
     {
-        if (_target != null)
+        if (_target == null)
             return Vector3.zero;
 
-        throw new System.NotImplementedException(); //TODO: Se perdio que hacia acá
+        float distance = Vector3.Distance(_entity.transform.position, _target.transform.position) - 0.1f;
+        Vector3 targetPoint = _target.transform.position + _target.GetFoward * Mathf.Clamp(_target.Velocity * _entity.IAStats.TimePrediction, -distance, distance);
+        //A:targetPoint
+        //B:entity
+        //B-A
+        Vector3 dir = _entity.transform.position - targetPoint;
+        return dir.normalized;
     }
 }

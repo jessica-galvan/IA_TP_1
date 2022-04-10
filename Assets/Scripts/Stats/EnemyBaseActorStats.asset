@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemyBaseActorStats
   m_EditorClassIdentifier: 
   _maxLife: 5
-  _speed: 5
+  _speed: 2
   _angleVision: 180
   _rangeVision: 5

@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class Pursuit : ISteering
 {
-    Transform _entity;
-    Transform _target;
-    IVelocity _targetVelocity;
-    float _predictionTime;
+    IArtificialMovement _entity;
+    ITarget _target;
 
-    public Pursuit(Transform entity, Transform target, IVelocity targetVelocity, float _predictionTime)
+    public Pursuit(IArtificialMovement entity)
     {
         _entity = entity;
-        SetTarget(target, targetVelocity);
+        SetTarget(_entity.Target);
     }
 
-    public void SetTarget(Transform newTarget, IVelocity newTargetVelocity)
+    public void SetTarget(ITarget target)
     {
-        _target = newTarget;
+        _target = target;
     }
 
     public Vector3 GetDir()
     {
-        if (_target != null || _targetVelocity != null)
+        if (_target == null)
             return Vector3.zero;
 
-        float distance = Vector3.Distance(_entity.position, _target.position) - 0.1f;
+        float distance = Vector3.Distance(_entity.transform.position, _target.transform.position) - 0.1f;
         //Movimiento Rectilineo Uniforme = Posicion Actual + Direccion * Velocidad * Tiempo
         //Se hizo un clamp para evitar que si el enemigo cambia el foward, no vaya en contra del objetivo. 
-        Vector3 targetPoint = _target.position + _targetVelocity.GetFoward * Mathf.Clamp(_targetVelocity.GetVel * _predictionTime, -distance, distance);
-        Vector3 dir = targetPoint - _entity.position;
+        Vector3 targetPoint = _target.transform.position + _target.GetFoward * Mathf.Clamp(_target.Velocity * _entity.IAStats.TimePrediction, -distance, distance);
+        Vector3 dir = targetPoint - _entity.transform.position;
         return dir.normalized;
     }
 }

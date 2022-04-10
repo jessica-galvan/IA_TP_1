@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunState<T> : CooldownState<T>
+public class GetHitState<T> : CooldownState<T>
 {
     private IModel _model;
 
-    public RunState(IModel model, float runTime, INode root) : base(runTime, root)
+    public GetHitState(IModel model, float runTime, INode root = null) : base(runTime, root)
     {
         _model = model;
     }
@@ -14,5 +14,6 @@ public class RunState<T> : CooldownState<T>
     public override void Init()
     {
         base.Init();
+        _model.GetHitAnimation();
     }
 }
