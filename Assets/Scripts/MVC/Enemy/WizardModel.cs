@@ -7,7 +7,7 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
 {
     //Variables
     [SerializeField] private IAStats _stats;
-    [SerializeField] private PlayerModel _target;
+    [SerializeField] private PlayerModel _target; //TODO: get this from game MANAGER
     //private ITarget _target;
     private ISteering _steering;
     private ISteering _avoidance;
@@ -65,8 +65,8 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
 
     public bool CheckIsTooFar()
     {
-        float distance = (transform.position - Target.transform.position).sqrMagnitude;
-        return distance > IAStats.MaxDistanceFromTarget;
+        float distance = Vector3.Distance(transform.position, Target.transform.position);
+        return distance < IAStats.MaxDistanceFromTarget;
     }
 }
 
