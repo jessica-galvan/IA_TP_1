@@ -20,4 +20,4 @@ MonoBehaviour:
   _steeringWeight: 1
   _avoidanceWeight: 1
   _timePrediction: 5
-  _maxDistanceFromTarget: 5
+  _maxDistanceFromTarget: 7

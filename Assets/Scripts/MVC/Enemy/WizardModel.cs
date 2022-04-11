@@ -7,7 +7,8 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
 {
     //Variables
     [SerializeField] private IAStats _stats;
-    [SerializeField] private ITarget _target;
+    [SerializeField] private PlayerModel _target;
+    //private ITarget _target;
     private ISteering _steering;
     private ISteering _avoidance;
     private float timeTurn = 1f;
@@ -30,8 +31,8 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
     void InitilizeSteering()
     {
         var seek = new Seek(this);
-        var flee = new Flee(this);
-        var pursuit = new Pursuit(this);
+        //var flee = new Flee(this);
+        //var pursuit = new Pursuit(this);
         _avoidance = new ObstacleAvoidance(this);
         
         SetNewSteering(seek);
@@ -56,13 +57,16 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
         _steering = newSteering;
     }
 
-    public bool CheckTargetDistance()
+    public bool CheckIsInRange() //Lets check when to we are too close or too far away
     {
-        //Lets check when to change to call for a _root
         float distance = (transform.position - Target.transform.position).sqrMagnitude;
-        print(distance);
-        return (distance < IAStats.MaxDistanceFromTarget || distance >= AttackStats.AttackRadious)? true : false;
+        return distance <= AttackStats.AttackRadious;
     }
 
+    public bool CheckIsTooFar()
+    {
+        float distance = (transform.position - Target.transform.position).sqrMagnitude;
+        return distance > IAStats.MaxDistanceFromTarget;
+    }
 }
 

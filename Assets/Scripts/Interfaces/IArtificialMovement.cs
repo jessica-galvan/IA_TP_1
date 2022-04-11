@@ -16,5 +16,6 @@ public interface IArtificialMovement //Es una IA con Movimiento, puede utilizar 
     void Move(Vector3 dir);
     void LookDir(Vector3 dir);
     void SetNewSteering(ISteering newSteering);
-    bool CheckTargetDistance();
+    bool CheckIsInRange();
+    bool CheckIsTooFar();
 }

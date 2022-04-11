@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WizardView : MonoBehaviour
+public class WizardView : EnemyBaseView
 {
-    // Start is called before the first frame update
-    void Start()
+    private WizardController _controller;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+        _model = GetComponent<WizardModel>();
+        _controller = GetComponent<WizardController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void SubscribeEvents()
     {
-        
+        base.SubscribeEvents();
+
+        if (_model is IArtificialMovement)
+            (_model as IArtificialMovement).OnMove += RunAnimation;
+    }
+
+    protected virtual void RunAnimation(bool value)
+    {
+        _animator?.SetBool("Run", value);
     }
 }

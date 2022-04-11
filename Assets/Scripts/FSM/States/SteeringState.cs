@@ -5,17 +5,32 @@ using UnityEngine;
 public class SteeringState<T> : State<T>
 {
     private IArtificialMovement _model;
+    private INode _root;
 
-    public SteeringState(IArtificialMovement model, INode root = null)
+    public SteeringState(IArtificialMovement model, INode root)
     {
         _model = model;
+        _root = root;
+    }
+    public override void Init()
+    {
+        base.Init();
+        //Should it do something????
     }
 
     public override void Execute()
     {
-        Vector3 dir = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + _model.Steering.GetDir() * _model.IAStats.SteeringWeight).normalized; //el avoidance puede ir adentro del state chase por ejemplo. o el seek, pursuit, flee, etc. 
-        _model.LookDir(dir);
-        _model.Move(dir);
+        if (!_model.CheckIsInRange()) //Si no estamos en rango de atacar o estamos a muuucha distancia (el player hullo!)....
+        {
+            Vector3 dir = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + _model.Steering.GetDir() * _model.IAStats.SteeringWeight).normalized; //el avoidance puede ir adentro del state chase por ejemplo. o el seek, pursuit, flee, etc. 
+            _model.LookDir(dir);
+            _model.Move(dir);
+        }
+        else
+        {
+            _root.Execute();
+        }
+
     }
 
 }

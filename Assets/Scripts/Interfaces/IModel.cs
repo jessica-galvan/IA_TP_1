@@ -14,8 +14,8 @@ public interface IModel
     Action OnHit { get; }
 
     void IdleAnimation();
-
     void GetHitAnimation();
+    void DieAnimation();
 
 }
 

@@ -62,7 +62,7 @@ public class PidgeonModel : EntityModel, IArtificialMovement
         _steering = newSteering;
     }
 
-    public bool CheckTargetDistance()
+    public bool CheckIsInRange()
     {
         float distance = (transform.position - Target.transform.position).sqrMagnitude;
         return distance <= IAStats.MaxDistanceFromTarget;
@@ -70,12 +70,17 @@ public class PidgeonModel : EntityModel, IArtificialMovement
 
     public void Update()
     {
-        if (CheckTargetDistance())
+        if (CheckIsInRange())
         {
             var dir = (_avoidance.GetDir() * IAStats.AvoidanceWeight + _steering.GetDir() * IAStats.SteeringWeight).normalized; //el avoidance puede ir adentro del state chase por ejemplo. o el seek, pursuit, flee, etc. 
 
             LookDir(dir);
             Move(dir);
         }
+    }
+
+    public bool CheckIsTooFar()
+    {
+        throw new NotImplementedException();
     }
 }

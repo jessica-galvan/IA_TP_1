@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PidgeonActorStats
   m_EditorClassIdentifier: 
   _maxLife: 100
-  _speed: 5
+  _speed: 4
   _angleVision: 270
   _rangeVision: 5

@@ -11,7 +11,6 @@ public class Flee : ISteering
     {
         _entity = entity;
         SetTarget(_entity.Target);
-        Debug.Log("hola");
     }
 
     public void SetTarget(ITarget newTarget)

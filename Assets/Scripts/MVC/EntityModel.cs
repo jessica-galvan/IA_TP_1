@@ -49,4 +49,9 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
         OnHit?.Invoke();
     }
 
+    public virtual void DieAnimation()
+    {
+        OnDie?.Invoke();
+    }
+
 }

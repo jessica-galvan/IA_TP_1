@@ -26,7 +26,7 @@ public class EnemyBaseController : EntityController
     protected INode _rootNode;
     protected Transform _target;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
         _model = GetComponent<EnemyBaseModel>();
         InitializedTree();
@@ -36,20 +36,20 @@ public class EnemyBaseController : EntityController
     protected virtual void InitializedTree()
     {
         INode dead = new ActionNode(()=> _fsm.Transition(states.Dead));
-        INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit));
+        //INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit));
         INode idle = new ActionNode(() => _fsm.Transition(states.Idle));
         INode attack = new ActionNode(() => _fsm.Transition(states.Attack));
-        INode steering = new ActionNode(() => _fsm.Transition(states.Steering));
-        INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol)); 
 
-        Dictionary<INode, int> random = new Dictionary<INode, int>();
-        random[idle] = 50;
-        random[patrol] = 50;
+        //INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol)); 
+        //Dictionary<INode, int> random = new Dictionary<INode, int>();
+        //random[idle] = 50;
+        //random[patrol] = 50;
+        //INode randomAction = new RandomNode(random);
+        //INode qIsHit = new QuestionNode(LifeController); //TODO: add get hit to tree behaviour?
 
-        INode randomAction = new RandomNode(random);
         INode qCanAttack = new QuestionNode(() => (_model as IAttack).CanAttack, attack, idle);
-        INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,qCanAttack, randomAction); //Si no esta en rango de ataque
-        INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction);
+        INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,qCanAttack, idle); //Si no esta en rango de ataque
+        INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, idle); 
         INode qIsDead = new QuestionNode(()=>_model.LifeController.IsDead,dead, qLineOfSight);
 
         _rootNode = qIsDead;
@@ -57,26 +57,31 @@ public class EnemyBaseController : EntityController
 
     protected bool CheckLineOfSight()
     {
-        if(_model is IAttack) 
+        bool answer = false;
+        if (_model is IAttack) 
         {      
             Transform[] targets = (_model as EnemyBaseModel).CheckTargetsInRadious();
+
             for (int i = targets.Length - 1; i >= 0; i--)
             {
                 if(_model is ILineOfSight)
                 {
-                    (_model as ILineOfSight).LineOfSight(targets[i]);
-                    return true;
+                    answer = (_model as ILineOfSight).LineOfSight(targets[i]);
                 }
             }
         }
-        return false;
+        return answer;
     }
 
     protected bool CheckIsInAttackRange()
     {
-        if(_model is IAttack)
-            return (_model as EnemyBaseModel).CheckTargetInFront();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
-        return false;
+        return (_model as IArtificialMovement).CheckIsInRange();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
+    }
+
+    protected virtual bool CanAttack()
+    {
+        print("Can Attack?: " + (_model as IAttack).CanAttack);
+        return (_model as IAttack).CanAttack;
     }
 
     protected virtual void InitializedFSM()
@@ -85,24 +90,24 @@ public class EnemyBaseController : EntityController
 
         _attackState = new AttackState<states>((_model as IAttack), timeTree,_rootNode);
         _idleState = new IdleState<states>(_model, timeTree, _rootNode);
-        _patrolState = new PatrolState<states>(_model, timeTree, _rootNode);
         _deadState = new DeadState<states>(_model, timeTree);
 
         _attackState.AddTransition(states.Dead, _deadState);
-        _attackState.AddTransition(states.Patrol, _patrolState);
         _attackState.AddTransition(states.Idle, _idleState);
 
-        _idleState.AddTransition(states.Patrol, _patrolState);
         _idleState.AddTransition(states.Attack, _attackState);
         _idleState.AddTransition(states.Dead, _deadState);
 
-        _patrolState.AddTransition(states.Attack, _attackState);
-        _patrolState.AddTransition(states.Idle, _idleState);
+        //_patrolState = new PatrolState<states>(_model, timeTree, _rootNode);
+        //_attackState.AddTransition(states.Patrol, _patrolState);
+        //_idleState.AddTransition(states.Patrol, _patrolState);
+        //_patrolState.AddTransition(states.Attack, _attackState);
+        //_patrolState.AddTransition(states.Idle, _idleState);
 
         _fsm.SetInit(_idleState);
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         _fsm.OnUpdate();
     }
@@ -113,7 +118,7 @@ public class EnemyBaseController : EntityController
     //    _rootNode.Execute();
     //}
 
-    protected bool CheckDistance()
+    protected bool CheckInDistance()
     {
         //TODO: check if player is in range of attack.
         //state of pursit llama a esta funcion, si da true, que llame de nuevo al arbol!
