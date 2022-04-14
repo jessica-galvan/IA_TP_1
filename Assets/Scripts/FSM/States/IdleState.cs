@@ -13,9 +13,12 @@ public class IdleState<T> : CooldownState<T>
 
     public override void Init()
     {
-        
+           
         //Debug.Log(_model.gameObject.name + " idle");
         _model.IdleAnimation();
         //TODO: call change animation to idle??
     }
+
+    //aca chequea por input para el player. 
+    //En el enemigo, tendria que llamar al line of sight durante el execute, si lo ve, llamar al root. 
 }

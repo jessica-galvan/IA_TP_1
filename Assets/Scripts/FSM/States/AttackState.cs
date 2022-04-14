@@ -36,4 +36,15 @@ public class AttackState<T> : CooldownState<T>
         //}
         base.Execute();
     }
+
+    //private IEnumerator WaitToAttack() //This is only for the delay that does damage IN the right moment of the slash
+    //{
+    //    yield return new WaitForSeconds(_attackStats.AttackDelay);
+    //    if (Physics.Raycast(transform.position + offsetToCenter, transform.forward, out RaycastHit hit, _attackStats.AttackRadious, _attackStats.TargetList))
+    //    {
+    //        LifeController life = hit.collider.GetComponent<LifeController>();
+    //        if (life != null)
+    //            life.TakeDamage(_attackStats.Damage);
+    //    }
+    //}
 }

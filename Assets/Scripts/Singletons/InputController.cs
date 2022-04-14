@@ -42,10 +42,22 @@ public class InputController : MonoBehaviour
     {
         CheckPause();
 
+        //if (!GameManager.instance.IsGameFreeze)
+        //{
+        //    CheckMovement();
+        //    CheckAttack();
+        //    CheckDefend();
+        //    //CheckJump();
+        //}
+    }
+
+    public void PlayerUpdate()
+    {
+
         if (!GameManager.instance.IsGameFreeze)
         {
-            CheckMovement();
             CheckAttack();
+            CheckMovement();
             CheckDefend();
             //CheckJump();
         }
@@ -53,7 +65,7 @@ public class InputController : MonoBehaviour
     #endregion
 
     #region Private
-    private void CheckMovement()
+    private void CheckMovement() //Moverlo para controllar en idle (chequeo si no me muevo) y en move (si me muevo) del player. 
     {
         float horizontal = Input.GetAxisRaw(horizontalAxis);
         float vertical = Input.GetAxisRaw(verticalAxis);

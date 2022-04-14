@@ -17,8 +17,8 @@ public class RouletteWheel<T>
 
         foreach (var item in items)
         {
-            random -= item.Value;
-            if (random <= 0)
+            random -= item.Value; //El valor de random - el primer item
+            if (random <= 0) //Si la resta de esos dos numeros da menor a cero, entonces estamos aprados ahi
                 return item.Key;
         }
 

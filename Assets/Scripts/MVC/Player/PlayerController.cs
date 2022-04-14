@@ -78,12 +78,12 @@ public class PlayerController : EntityController
         _fsm.OnUpdate();
     }
 
-    private void Move(float x, float y) //TODO: Make player stop moving when attacking
+    private void Move(float x, float y) //TODO: Mover todo esto a un PlayerMoveState. Le pasaria el inputController. 
     {   
-
-        if (_fsm.GetCurrentState != _runState)
+        if(x != 0 || x != 0)
         {
-            _fsm.Transition(states.Run);
+            if (_fsm.GetCurrentState != _runState)
+                _fsm.Transition(states.Run);
         }
 
         if (_fsm.GetCurrentState == _runState) //if the character is running, the move. Because else, it moves when attacking

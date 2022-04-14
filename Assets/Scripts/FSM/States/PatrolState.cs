@@ -14,6 +14,6 @@ public class PatrolState<T> : CooldownState<T>
     public override void Init()
     {
         base.Init();
-        //TODO: call change animation to walk/run + initialized patrol route in enemies
+        //TODO: implementar sistema de waypoints de progra 2. Incluir bool para "revertir" o no. en caso de que sea una linea recta en vez de un area
     }
 }

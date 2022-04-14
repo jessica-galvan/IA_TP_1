@@ -21,8 +21,14 @@ public class WizardView : EnemyBaseView
             (_model as IArtificialMovement).OnMove += RunAnimation;
     }
 
+    protected override void Idle()
+    {
+        _animator?.Play("idle");
+    }
+
+
     protected virtual void RunAnimation(bool value)
     {
-        _animator?.SetBool("Run", value);
+        _animator?.SetBool("Walk", value);
     }
 }

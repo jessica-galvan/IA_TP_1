@@ -68,5 +68,13 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
         float distance = Vector3.Distance(transform.position, Target.transform.position);
         return distance < IAStats.MaxDistanceFromTarget;
     }
+
+    public override void IdleAnimation()
+    {
+        base.IdleAnimation();
+        _rb.velocity = Vector3.zero;
+
+    }
 }
 
+    

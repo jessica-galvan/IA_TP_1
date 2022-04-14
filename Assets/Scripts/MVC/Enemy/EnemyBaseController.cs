@@ -29,6 +29,12 @@ public class EnemyBaseController : EntityController
     protected override void Awake()
     {
         _model = GetComponent<EnemyBaseModel>();
+
+    }
+
+    protected override void Start() //Suscribir al LifeController.TakeDamage a una funcion que llame a la transicion de get hit con fms. 
+    {
+        base.Start();
         InitializedTree();
         InitializedFSM();
     }

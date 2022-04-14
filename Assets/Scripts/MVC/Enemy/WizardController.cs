@@ -46,19 +46,4 @@ public class WizardController : EnemyBaseController
     {
         return (_model as IAttack).CanAttack;
     }
-
-    //protected override void Update()
-    //{
-    //    if (CheckLineOfSight())
-    //    {
-    //        if ((_model as IArtificialMovement).CheckTargetDistance())
-    //        {
-    //            var dir = ((_model as IArtificialMovement).Avoidance.GetDir() * (_model as IArtificialMovement).IAStats.AvoidanceWeight + (_model as IArtificialMovement).Steering.GetDir() * (_model as IArtificialMovement).IAStats.SteeringWeight).normalized; //el avoidance puede ir adentro del state chase por ejemplo. o el seek, pursuit, flee, etc. 
-
-    //            (_model as IArtificialMovement).LookDir(dir);
-    //            (_model as IArtificialMovement).Move(dir);
-    //        }
-    //    }
-
-    //}
 }

@@ -30,4 +30,6 @@ public class DeadState<T> : State<T>
         //    //GameObject.Destroy(_model.gameObject);
         //}
     }
+
+    //clase nueva que se dedica a hacer un cooldown una que chequee cuando hago el punto medio, otra para el final del ataque. para transicionar. 
 }
