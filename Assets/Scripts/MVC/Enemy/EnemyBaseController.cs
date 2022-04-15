@@ -94,7 +94,7 @@ public class EnemyBaseController : EntityController
     {
         _fsm = new FSM<states>();
 
-        _attackState = new AttackState<states>((_model as IAttack), timeTree,_rootNode);
+        _attackState = new AttackState<states>((_model as IAttack), _rootNode);
         _idleState = new IdleState<states>(_model, timeTree, _rootNode);
         _deadState = new DeadState<states>(_model, timeTree);
 

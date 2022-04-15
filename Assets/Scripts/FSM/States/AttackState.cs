@@ -2,49 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState<T> : CooldownState<T>
+public class AttackState<T> : State<T>
 {
     private IAttack _model;
+    private INode _root;
+    private float _counter;
+    private float _attackDelayTimer;
+    private bool hasAttacked;
 
-    public AttackState(IAttack model, float timeAttack, INode root = null) : base(timeAttack, root)
+    public AttackState(IAttack model, INode root = null)
     {
         _model = model;
+        _root = root;
     }
 
     public override void Init()
     {
-        base.Init();
-        _model.Attack();
+        if (_model.CanAttack) //Check si puede estar acá, sino volve al root
+        {
+            _model.Attack();
+            _counter = _model.AttackStats.AttackAnimationTime;
+            hasAttacked = false;
+        } else
+        {
+            if (_root != null)
+                _root.Execute();
+        }
     }
 
     public override void Execute()
     {
-        //For now, do nothing
+        _counter -= Time.deltaTime;
 
+        if (!hasAttacked && _counter <= _attackDelayTimer)
+            OnDamageMoment();
 
-        //var objs = _model.CheckTargetsInRadious();
-        //if(objs != null && objs.Length > 0)
-        //{
-        //    for (int i = objs.Length - 1; i >= 0; i--)
-        //    {
-        //        //Debug.Log(objs[i].name + " was attacked");
-        //        //_model.Attack();
-        //    }
-
-        //    if (_root != null)
-        //        _root.Execute();
-        //}
-        base.Execute();
+        if (_counter <= 0)
+        {
+            _counter = _model.AttackStats.AttackAnimationTime;
+            OnFinishedAction();
+        }
     }
 
-    //private IEnumerator WaitToAttack() //This is only for the delay that does damage IN the right moment of the slash
-    //{
-    //    yield return new WaitForSeconds(_attackStats.AttackDelay);
-    //    if (Physics.Raycast(transform.position + offsetToCenter, transform.forward, out RaycastHit hit, _attackStats.AttackRadious, _attackStats.TargetList))
-    //    {
-    //        LifeController life = hit.collider.GetComponent<LifeController>();
-    //        if (life != null)
-    //            life.TakeDamage(_attackStats.Damage);
-    //    }
-    //}
+    public void OnDamageMoment()
+    {
+        hasAttacked = true;
+        //call to damage instantiation;
+    }
+
+    public void OnFinishedAction()
+    {
+        if (_root != null)
+            _root.Execute();
+    }
 }

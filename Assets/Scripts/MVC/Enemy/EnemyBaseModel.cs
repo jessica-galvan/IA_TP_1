@@ -12,6 +12,8 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 
     //PROPIERTIES
     public bool IsDetectedTargets { get; set; }
+
+    public bool IsCooldownActive => cooldownTimer > 0;
     public bool CanAttack { get; private set; }
     public Transform PlayerTarget { get; private set; }
 

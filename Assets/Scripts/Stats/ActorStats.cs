@@ -13,5 +13,11 @@ public class ActorStats : ScriptableObject //FLYWEIGTH
     [SerializeField] private float _angleVision;
     public float RangeVision => _rangeVision;
     [SerializeField] private float _rangeVision;
+
+    public Vector3 OffSetToCenter => _offsetToCenter;
+    [SerializeField] private Vector3 _offsetToCenter = new Vector3(0, 0.5f, 0);
+
+    public float TurnSpeed => _turnSpeed;
+    [SerializeField] private float _turnSpeed = 0.1f; 
 }
 

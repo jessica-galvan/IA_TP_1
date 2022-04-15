@@ -22,3 +22,4 @@ MonoBehaviour:
   _damage: 2
   _cooldown: 1
   _attackDelay: 0.2
+  _attackAnimationTime: 0.7

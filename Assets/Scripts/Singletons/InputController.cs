@@ -6,6 +6,7 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
     public static InputController instance;
+    public bool IsMoving { get; private set; }
 
     #region KeyCodes
     private string horizontalAxis = "Horizontal";
@@ -21,16 +22,14 @@ public class InputController : MonoBehaviour
     public Action OnAttack;
     public Action OnDefend;
     public Action OnJump;
-    public Action<float, float> OnMove;
+    public Action<Vector3> OnMove;
     #endregion
 
     #region Unity
     private void Awake()
     {
         if (instance != null)
-        {
             Destroy(gameObject);
-        }
         else
         {
             instance = this;
@@ -41,24 +40,15 @@ public class InputController : MonoBehaviour
     private void Update()
     {
         CheckPause();
-
-        //if (!GameManager.instance.IsGameFreeze)
-        //{
-        //    CheckMovement();
-        //    CheckAttack();
-        //    CheckDefend();
-        //    //CheckJump();
-        //}
     }
 
     public void PlayerUpdate()
     {
-
         if (!GameManager.instance.IsGameFreeze)
         {
             CheckAttack();
             CheckMovement();
-            CheckDefend();
+            //CheckDefend();
             //CheckJump();
         }
     }
@@ -69,15 +59,14 @@ public class InputController : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw(horizontalAxis);
         float vertical = Input.GetAxisRaw(verticalAxis);
-        OnMove?.Invoke(horizontal, vertical);
+        IsMoving = (vertical != 0|| horizontal != 0) ? true : false;
+        print("Is Moving?: " + IsMoving);
+        OnMove?.Invoke(new Vector3(horizontal, 0, vertical));
     }
     private void CheckAttack()
     {
         if (Input.GetKeyDown(attack))
-        {
             OnAttack?.Invoke();
-        }
-
     }
     private void CheckDefend()
     {

@@ -7,11 +7,13 @@ public interface ITarget //Si implementa esta interface, IArtificialMovement pue
 {
     Transform transform { get; }
 
+    Rigidbody Rb { get; }
+
     float Velocity { get; }
 
     Vector3 GetFoward { get; }
 
-    void Move(float x, float y);
+    void Move();
 
-    Action<bool> OnMove { get; set; }
+    Action OnMove { get; set; }
 }

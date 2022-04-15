@@ -5,6 +5,7 @@ using UnityEngine;
 
 public interface IModel
 {
+    public GameObject gameObject { get; }
     public LifeController LifeController { get; }
     public ActorStats ActorStats { get; }
     public AttackStats AttackStats { get; }

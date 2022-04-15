@@ -6,27 +6,22 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerModel : EntityModel, IAttack, ITarget
 {
-    //Variables
-    [SerializeField] private Vector3 offsetToCenter = new Vector3(0, 0.5f, 0);
-    [SerializeField] private float turnSpeed = 0.1f;
+    //VARIABLES
     protected float cooldownTimer;
     protected Rigidbody _rb;
 
     //PROPIERTIES
-    public bool CanAttack { get; private set; }
-
+    public Rigidbody Rb { get => _rb; }
+    public bool CanAttack { get; private set ; }
     public float Velocity => _rb.velocity.magnitude;
-
     public Vector3 GetFoward => transform.forward;
 
     //EVENTS
-    public Action OnAttack { get => _onAttack; set => _onAttack = value; }
-
     private Action _onAttack = delegate { };
+    private Action _onMove = delegate { };
 
-    public Action<bool> OnMove{ get => _onMove; set => _onMove = value; }
-
-    private Action<bool> _onMove = delegate { };
+    public Action OnAttack { get => _onAttack; set => _onAttack = value; }
+    public Action OnMove { get => _onMove; set => _onMove = value; }
 
     protected override void Awake()
     {
@@ -57,36 +52,22 @@ public class PlayerModel : EntityModel, IAttack, ITarget
             CanAttack = false;
             cooldownTimer = _attackStats.Cooldown;
             OnAttack?.Invoke();
-            StartCoroutine(WaitToAttack());
         }
     }
 
-    public void Move(float x, float z)
+    public void Move()
     {
-        Vector3 direction = new Vector3(x, 0f, z).normalized;
-
-        if(direction.magnitude >= 0.1f)
-        {
-            _rb.velocity = direction * _actorStats.Speed;
-            transform.forward = Vector3.Lerp(transform.forward, direction, turnSpeed);
-        }
-
-        OnMove?.Invoke(direction.magnitude >= 0.1f);
+        OnMove?.Invoke();
     }
 
-    private IEnumerator WaitToAttack() //This is only for the delay that does damage IN the right moment of the slash
+    public override void IdleAnimation()
     {
-        yield return new WaitForSeconds(_attackStats.AttackDelay);
-        if (Physics.Raycast(transform.position + offsetToCenter, transform.forward, out RaycastHit hit, _attackStats.AttackRadious, _attackStats.TargetList))
-        {
-            LifeController life = hit.collider.GetComponent<LifeController>();
-            if (life != null)
-                life.TakeDamage(_attackStats.Damage);
-        }
+        Move();
+        base.IdleAnimation();
     }
 
     //private void OnDrawGizmos()
     //{
-    //    Debug.DrawRay(transform.position + offsetToCenter, transform.forward, Color.red,_attackStats.AttackRadious);
+    //    Debug.DrawRay(transform.position + _actorStats.OffSetToCenter, transform.forward, Color.red, _attackStats.AttackRadious);
     //}
 }

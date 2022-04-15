@@ -22,4 +22,7 @@ public class AttackStats : ScriptableObject
 
     public float AttackDelay => _attackDelay;
     [SerializeField] private float _attackDelay = 1f;
+
+    public float AttackAnimationTime => _attackAnimationTime;
+    [SerializeField] private float _attackAnimationTime = 3f;
 }
