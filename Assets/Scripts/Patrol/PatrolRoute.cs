@@ -14,7 +14,7 @@ public class PatrolRoute : MonoBehaviour
     public GameObject[] PatrolNodes => patrolNodes;
 
 
-    void Awake()
+    public void Initialize()
     {
         ConvertToArray();
         if (patrolPoints.Length > 1)
