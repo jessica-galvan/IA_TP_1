@@ -12,11 +12,6 @@ public class SteeringState<T> : State<T>
         _model = model;
         _root = root;
     }
-    public override void Init()
-    {
-        base.Init();
-        //Should it do something????
-    }
 
     public override void Execute()
     {

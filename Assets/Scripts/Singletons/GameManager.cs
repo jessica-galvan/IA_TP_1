@@ -13,11 +13,11 @@ public class GameManager : MonoBehaviour
 
     public string CurrentLevel { get; private set; }
 
-    public PlayerController Player { get; private set; }
+    public ITarget Player { get; private set; }
 
     //EVENTS
     public Action OnPause;
-    public Action<Transform> OnPlayerInit;
+    public Action<ITarget> OnPlayerInit;
 
     public void Awake()
     {
@@ -56,9 +56,9 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void SetPlayer(PlayerController player)
+    public void SetPlayer(PlayerModel player)
     {
         Player = player;
-        OnPlayerInit.Invoke(Player.transform);       
+        OnPlayerInit?.Invoke(Player);
     }
 }

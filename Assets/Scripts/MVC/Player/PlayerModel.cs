@@ -29,6 +29,12 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         _rb = GetComponent<Rigidbody>();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        GameManager.instance.SetPlayer(this);
+    }
+
     protected virtual void Update()
     {
         CheckCanAttack();

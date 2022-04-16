@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "IAStats", menuName = "Stats/IAStats", order = 2)]
 public class IAStats : ScriptableObject
 {
+    public float TimeRoot => _timeRoot;
+    [SerializeField] float _timeRoot = 1f;
+
     public LayerMask ObstacleList => _obstacleList;
     [SerializeField] private LayerMask _obstacleList;
 

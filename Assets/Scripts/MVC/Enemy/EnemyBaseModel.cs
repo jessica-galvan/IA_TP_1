@@ -15,7 +15,7 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 
     public bool IsCooldownActive => cooldownTimer > 0;
     public bool CanAttack { get; private set; }
-    public Transform PlayerTarget { get; private set; }
+    public ITarget Target { get; private set; }
 
     //EVENTS
     public Action OnAttack { get => _onAttack; set => _onAttack = value; }
@@ -28,6 +28,7 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
     {
         base.Awake();
         _rb = GetComponent<Rigidbody>();
+
     }
 
     protected override void Start()
@@ -52,10 +53,10 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         }
     }
 
-    private void SetEnemyList(Transform playerTarget)
+    protected virtual void SetEnemyList(ITarget playerTarget)
     {
         GameManager.instance.OnPlayerInit -= SetEnemyList;
-        PlayerTarget = playerTarget;
+        Target = playerTarget;
     }
 
     public Transform[] CheckTargetsInRadious() //Checks and Returns a List of Targets that are in the AOE attack radious
@@ -95,21 +96,14 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         return true;
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         if (CanAttack)
         {
             CanAttack = false;
             cooldownTimer = _attackStats.Cooldown;
             OnAttack?.Invoke();
-            StartCoroutine(WaitToAttack());
         }
-    }
-
-    private IEnumerator WaitToAttack()
-    {
-        yield return new WaitForSeconds(_attackStats.AttackDelay);
-        //TODO: Hacer que haga el ataque (instancie o fisico) 
     }
 
     private void OnDrawGizmos()

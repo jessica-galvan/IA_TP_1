@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class IdleState<T> : CooldownState<T>
 {
-    private IModel _model;
+    private IArtificialMovement _model;
+    private ILineOfSight _attack;
+    private INode _root;
 
-    public IdleState(IModel actor, float timeIdle, INode root = null) : base(timeIdle, root)
+    public IdleState(IArtificialMovement actor, float time, INode root) : base(time, root)
     {
         _model = actor;
+        _root = root;
     }
 
     public override void Init()
     {
-           
-        //Debug.Log(_model.gameObject.name + " idle");
-        _model.IdleAnimation();
-        //TODO: call change animation to idle??
+        (_model as IModel).IdleAnimation();
     }
 
-    //aca chequea por input para el player. 
-    //En el enemigo, tendria que llamar al line of sight durante el execute, si lo ve, llamar al root. 
+    public override void Execute()
+    {
+        base.Execute();
+        if(_model.Target != null)
+        {
+            if (_model.LineOfSight(_model.Target.transform)) //En el enemigo, tendria que llamar al line of sight durante el execute, si lo ve, llamar al root. 
+                _root.Execute();
+        }
+    }    
 }

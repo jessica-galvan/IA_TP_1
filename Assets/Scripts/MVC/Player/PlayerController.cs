@@ -35,7 +35,6 @@ public class PlayerController : EntityController
     {
         base.Start();
         InitializedFSM();
-        //GameManager.instance.SetPlayer(this);
     }
 
     protected override void SubscribeEvents() //El input se recibe en el controller

@@ -30,7 +30,7 @@ public class PidgeonModel : EntityModel, IArtificialMovement
         InitilizeSteering();
     }
 
-    void InitilizeSteering()
+    public void InitilizeSteering()
     {
         var seek = new Seek(this);
         var flee = new Flee(this);
@@ -80,6 +80,11 @@ public class PidgeonModel : EntityModel, IArtificialMovement
     }
 
     public bool CheckIsTooFar()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool LineOfSight(Transform target)
     {
         throw new NotImplementedException();
     }

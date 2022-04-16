@@ -60,7 +60,6 @@ public class InputController : MonoBehaviour
         float horizontal = Input.GetAxisRaw(horizontalAxis);
         float vertical = Input.GetAxisRaw(verticalAxis);
         IsMoving = (vertical != 0|| horizontal != 0) ? true : false;
-        print("Is Moving?: " + IsMoving);
         OnMove?.Invoke(new Vector3(horizontal, 0, vertical));
     }
     private void CheckAttack()

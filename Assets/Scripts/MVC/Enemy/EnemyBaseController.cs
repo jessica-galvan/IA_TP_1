@@ -24,7 +24,6 @@ public class EnemyBaseController : EntityController
     protected IState<states> _deadState;
     protected IState<states> _patrolState;
     protected INode _rootNode;
-    protected Transform _target;
 
     protected override void Awake()
     {
@@ -71,9 +70,7 @@ public class EnemyBaseController : EntityController
             for (int i = targets.Length - 1; i >= 0; i--)
             {
                 if(_model is ILineOfSight)
-                {
                     answer = (_model as ILineOfSight).LineOfSight(targets[i]);
-                }
             }
         }
         return answer;
@@ -95,7 +92,7 @@ public class EnemyBaseController : EntityController
         _fsm = new FSM<states>();
 
         _attackState = new AttackState<states>((_model as IAttack), _rootNode);
-        _idleState = new IdleState<states>(_model, timeTree, _rootNode);
+        _idleState = new IdleState<states>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
         _deadState = new DeadState<states>(_model, timeTree);
 
         _attackState.AddTransition(states.Dead, _deadState);
@@ -103,12 +100,6 @@ public class EnemyBaseController : EntityController
 
         _idleState.AddTransition(states.Attack, _attackState);
         _idleState.AddTransition(states.Dead, _deadState);
-
-        //_patrolState = new PatrolState<states>(_model, timeTree, _rootNode);
-        //_attackState.AddTransition(states.Patrol, _patrolState);
-        //_idleState.AddTransition(states.Patrol, _patrolState);
-        //_patrolState.AddTransition(states.Attack, _attackState);
-        //_patrolState.AddTransition(states.Idle, _idleState);
 
         _fsm.SetInit(_idleState);
     }

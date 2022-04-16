@@ -16,4 +16,13 @@ public class GetHitState<T> : CooldownState<T>
         base.Init();
         _model.GetHitAnimation();
     }
+
+    public override void Execute()
+    {
+        base.Execute();
+    }
+    public override void Exit()
+    {
+        base.Exit();
+    }
 }

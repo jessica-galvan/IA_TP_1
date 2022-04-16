@@ -3,21 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WizardModel : EnemyBaseModel, IArtificialMovement
+public class WizardModel : EnemyBaseModel, IPatrol
 {
     //Variables
     [SerializeField] private IAStats _stats;
-    [SerializeField] private PlayerModel _target; //TODO: get this from game MANAGER
-    //private ITarget _target;
     private ISteering _steering;
     private ISteering _avoidance;
     private float timeTurn = 1f;
 
     //Properties
     public ISteering Avoidance => _avoidance;
-    public ITarget Target => _target;
     public IAStats IAStats => _stats;
     public ISteering Steering => _steering;
+
+    public GameObject[] PatrolRoute { get; private set; }
 
     public Action<bool> OnMove { get => _onMove; set => _onMove = value; }
     private Action<bool> _onMove = delegate { };
@@ -25,10 +24,16 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
     protected override void Awake()
     {
         base.Awake();
-        InitilizeSteering();
+        PatrolRoute = GetComponentInChildren<PatrolRoute>().PatrolNodes;
     }
 
-    void InitilizeSteering()
+    protected override void Start()
+    {
+        base.Start();
+
+    }
+
+    public void InitilizeSteering()
     {
         var seek = new Seek(this);
         //var flee = new Flee(this);
@@ -36,6 +41,12 @@ public class WizardModel : EnemyBaseModel, IArtificialMovement
         _avoidance = new ObstacleAvoidance(this);
         
         SetNewSteering(seek);
+    }
+
+    protected override void SetEnemyList(ITarget playerTarget)
+    {
+        base.SetEnemyList(playerTarget);
+        InitilizeSteering();
     }
 
     public void Move(Vector3 dir)
