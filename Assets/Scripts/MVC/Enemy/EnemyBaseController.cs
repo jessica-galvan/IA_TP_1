@@ -73,6 +73,7 @@ public class EnemyBaseController : EntityController
                     answer = (_model as ILineOfSight).LineOfSight(targets[i]);
             }
         }
+        //print("Can see player? " + answer);
         return answer;
     }
 

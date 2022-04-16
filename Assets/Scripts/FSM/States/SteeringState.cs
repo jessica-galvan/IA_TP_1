@@ -13,6 +13,11 @@ public class SteeringState<T> : State<T>
         _root = root;
     }
 
+    public override void Init()
+    {
+        base.Init();
+    }
+
     public override void Execute()
     {
         if (!_model.CheckIsInRange() && _model.CheckIsTooFar()) //Si no estamos en rango de atacar o estamos a muuucha distancia (el player hullo!)....

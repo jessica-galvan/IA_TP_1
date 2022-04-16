@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLife: 5
   _speed: 3
-  _angleVision: 180
+  _angleVision: 90
   _rangeVision: 10
+  _offsetToCenter: {x: 0, y: 0.5, z: 0}
+  _turnSpeed: 0.1

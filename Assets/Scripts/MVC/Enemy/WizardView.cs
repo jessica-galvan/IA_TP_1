@@ -26,6 +26,12 @@ public class WizardView : EnemyBaseView
         _animator?.Play("idle");
     }
 
+    protected override void AttackAnimation()
+    {
+        base.AttackAnimation();
+        RunAnimation(false);
+    }
+
 
     protected virtual void RunAnimation(bool value)
     {

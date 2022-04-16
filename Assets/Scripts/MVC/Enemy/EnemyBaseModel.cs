@@ -111,7 +111,8 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _actorStats.RangeVision);
 
-        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, _actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
-        Gizmos.DrawRay(transform.position, Quaternion.Euler(0, -_actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, _actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
+        Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, -_actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
     }
 }

@@ -23,18 +23,10 @@ public class EnemyBaseView : EntityView
             (_model as IAttack).OnAttack += AttackAnimation;
     }
 
-    private void AttackAnimation()
+    protected virtual void AttackAnimation()
     {
         if (!_animator.GetAnimatorTransitionInfo(0).IsName("attack00"))
-        {
-            //_animator.SetTrigger("Attack");
             _animator.Play("attack00");
-        }
 
-    }
-
-    private void OnRealAttackPoint()
-    {
-        OnRealAttackMoment?.Invoke();
     }
 }

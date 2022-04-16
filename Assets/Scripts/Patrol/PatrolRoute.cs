@@ -6,6 +6,7 @@ public class PatrolRoute : MonoBehaviour
 {
     [SerializeField] Transform parent;
     [SerializeField] Transform[] patrolPoints;
+    [SerializeField] GameObject example;
 
     private GameObject[] patrolNodes;
 
@@ -39,7 +40,10 @@ public class PatrolRoute : MonoBehaviour
         for (int i = 0; i < patrolPoints.Length; i++)
         {
             GameObject aux = new GameObject("PatrolNode "+ i);
+            //GameObject aux = Instantiate(example);
             aux.transform.position = patrolPoints[i].transform.position;
+            //Vector3 vector = new Vector3(patrolPoints[i].transform.position.x, 0, patrolPoints[i].transform.position.z);
+            //aux.transform.position = vector;
             aux.transform.parent = parent.transform;
             patrolNodes[i] = aux;
         }

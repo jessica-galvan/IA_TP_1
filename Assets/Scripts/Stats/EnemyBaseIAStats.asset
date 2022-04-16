@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2555001ccfb20e544b9ddd6d31adae7e, type: 3}
   m_Name: EnemyBaseIAStats
   m_EditorClassIdentifier: 
+  _timeRoot: 1
   _obstacleList:
     serializedVersion: 2
     m_Bits: 512
@@ -20,4 +21,4 @@ MonoBehaviour:
   _steeringWeight: 1
   _avoidanceWeight: 1
   _timePrediction: 5
-  _maxDistanceFromTarget: 7
+  _maxDistanceFromTarget: 11

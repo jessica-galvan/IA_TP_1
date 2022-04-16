@@ -7,6 +7,7 @@ public class WizardModel : EnemyBaseModel, IPatrol
 {
     //Variables
     [SerializeField] private IAStats _stats;
+    [SerializeField] private bool _canReversePatrol;
     private ISteering _steering;
     private ISteering _avoidance;
     private float timeTurn = 1f;
@@ -15,6 +16,7 @@ public class WizardModel : EnemyBaseModel, IPatrol
     public ISteering Avoidance => _avoidance;
     public IAStats IAStats => _stats;
     public ISteering Steering => _steering;
+    public bool CanReversePatrol => _canReversePatrol;
 
     public GameObject[] PatrolRoute { get; private set; }
 
@@ -73,18 +75,27 @@ public class WizardModel : EnemyBaseModel, IPatrol
     public bool CheckIsInRange() //Lets check when to we are too close or too far away
     {
         float distance = (transform.position - Target.transform.position).sqrMagnitude;
+        print("is in range? " + (distance <= AttackStats.AttackRadious));
         return distance <= AttackStats.AttackRadious;
     }
 
     public bool CheckIsTooFar()
     {
         float distance = Vector3.Distance(transform.position, Target.transform.position);
-        return distance < IAStats.MaxDistanceFromTarget;
+        if (IAStats.MaxDistanceFromTarget < ActorStats.RangeVision) //Ehhh para que no vuelva a pasar, si la persecucion maxima es menor a la vision.. usan vision range. 
+        {
+            print("OJO!! stat de distancia maxima de persecución es menor a la de vision!");
+            return distance < ActorStats.RangeVision;
+        }
+        else
+            return distance < IAStats.MaxDistanceFromTarget;
     }
 
     public override void IdleAnimation()
     {
-        base.IdleAnimation();
+        base.IdleAnimation();  
+        print("idle animation called");
+        OnMove?.Invoke(false);
         _rb.velocity = Vector3.zero;
 
     }
