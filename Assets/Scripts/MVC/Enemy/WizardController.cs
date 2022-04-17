@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WizardController : EnemyBaseController
 {
-    private IState<states> _steeringState;
+    private IState<EnemySates> _steeringState;
 
     protected override void Awake()
     {
@@ -14,11 +14,11 @@ public class WizardController : EnemyBaseController
 
     protected override void InitializedTree()
     {
-        INode dead = new ActionNode(() => _fsm.Transition(states.Dead));
-        INode idle = new ActionNode(() => _fsm.Transition(states.Idle));
-        INode attack = new ActionNode(() => _fsm.Transition(states.Attack));
-        INode steering = new ActionNode(() => _fsm.Transition(states.Steering));
-        INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol));
+        INode dead = new ActionNode(() => _fsm.Transition(EnemySates.Dead));
+        INode idle = new ActionNode(() => _fsm.Transition(EnemySates.Idle));
+        INode attack = new ActionNode(() => _fsm.Transition(EnemySates.Attack));
+        INode steering = new ActionNode(() => _fsm.Transition(EnemySates.Steering));
+        INode patrol = new ActionNode(() => _fsm.Transition(EnemySates.Patrol));
         //INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit)); //TODO: add get hit animation?
 
         Dictionary<INode, int> random = new Dictionary<INode, int>();
@@ -37,24 +37,35 @@ public class WizardController : EnemyBaseController
 
     protected override void InitializedFSM()
     {
-        base.InitializedFSM();
+        _fsm = new FSM<EnemySates>();
 
-        //Steering
-        _steeringState = new SteeringState<states>(_model as IArtificialMovement, _rootNode);
-        _attackState.AddTransition(states.Steering, _steeringState);
-        _idleState.AddTransition(states.Steering, _steeringState);
-        _steeringState.AddTransition(states.Attack, _attackState);
-        _steeringState.AddTransition(states.Idle, _idleState);
-        _steeringState.AddTransition(states.Dead, _deadState);
+        _idleState = new IdleState<EnemySates>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
+        _attackState = new ShootAttackState<EnemySates>((_model as IAttackMagic), _rootNode);
+        _steeringState = new SteeringState<EnemySates>(_model as IArtificialMovement, _rootNode);
+        _patrolState = new PatrolState<EnemySates>(_model as IPatrol, _rootNode, (_model as IPatrol).IAStats.CanReversePatrol);
+        _deadState = new DeadState<EnemySates>(_model, timeTree);
 
-        //Patrol 
-        _patrolState = new PatrolState<states>(_model as IPatrol, _rootNode, (_model as IPatrol).CanReversePatrol);
-        _attackState.AddTransition(states.Patrol, _patrolState);
-        _idleState.AddTransition(states.Patrol, _patrolState);
-        _steeringState.AddTransition(states.Patrol, _patrolState);
-        _patrolState.AddTransition(states.Attack, _attackState);
-        _patrolState.AddTransition(states.Idle, _idleState);
-        _patrolState.AddTransition(states.Steering, _steeringState);
+        _attackState.AddTransition(EnemySates.Dead, _deadState);
+        _attackState.AddTransition(EnemySates.Idle, _idleState);
+        _attackState.AddTransition(EnemySates.Patrol, _patrolState);
+        _attackState.AddTransition(EnemySates.Steering, _steeringState);
+
+        _idleState.AddTransition(EnemySates.Attack, _attackState);
+        _idleState.AddTransition(EnemySates.Dead, _deadState);
+        _idleState.AddTransition(EnemySates.Steering, _steeringState);
+        _idleState.AddTransition(EnemySates.Patrol, _patrolState);
+
+        _steeringState.AddTransition(EnemySates.Attack, _attackState);
+        _steeringState.AddTransition(EnemySates.Idle, _idleState);
+        _steeringState.AddTransition(EnemySates.Dead, _deadState);
+        _steeringState.AddTransition(EnemySates.Patrol, _patrolState);
+
+        _patrolState.AddTransition(EnemySates.Attack, _attackState);
+        _patrolState.AddTransition(EnemySates.Idle, _idleState);
+        _patrolState.AddTransition(EnemySates.Dead, _deadState);
+        _patrolState.AddTransition(EnemySates.Steering, _steeringState);
+
+        _fsm.SetInit(_idleState);
     }
 
     protected override bool CanAttack()

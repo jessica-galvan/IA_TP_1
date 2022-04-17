@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState<T> : State<T>
+public class PhysicalAttackState<T> : State<T>
 {
     private IAttack _model;
     private INode _root;
@@ -10,7 +10,7 @@ public class AttackState<T> : State<T>
     private float _attackDelayTimer;
     private bool hasAttacked;
 
-    public AttackState(IAttack model, INode root = null)
+    public PhysicalAttackState(IAttack model, INode root = null)
     {
         _model = model;
         _root = root;

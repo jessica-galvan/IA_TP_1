@@ -7,13 +7,11 @@ using UnityEngine;
 public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 {
     //Variables
+    [SerializeField] private bool DrawGizmos;
     protected float cooldownTimer;
     protected Rigidbody _rb;
 
     //PROPIERTIES
-    public bool IsDetectedTargets { get; set; }
-
-    public bool IsCooldownActive => cooldownTimer > 0;
     public bool CanAttack { get; private set; }
     public ITarget Target { get; private set; }
 
@@ -24,11 +22,12 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
     public Action OnWalk { get => _onWalk; set => _onWalk = value; }
     private Action _onWalk = delegate { };
 
+    #region Private
     protected override void Awake()
     {
         base.Awake();
+        CanAttack = true;
         _rb = GetComponent<Rigidbody>();
-
     }
 
     protected override void Start()
@@ -37,28 +36,35 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         GameManager.instance.OnPlayerInit += SetEnemyList;
     }
 
-    protected virtual void Update()
-    {
-        CheckCanAttack();
-    }
-
-    protected void CheckCanAttack()
-    {
-        if (!CanAttack)
-        {
-            if (cooldownTimer > 0)
-                cooldownTimer -= Time.deltaTime;
-            else
-                CanAttack = true;
-        }
-    }
-
     protected virtual void SetEnemyList(ITarget playerTarget)
     {
         GameManager.instance.OnPlayerInit -= SetEnemyList;
         Target = playerTarget;
     }
 
+    protected IEnumerator AttackTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        CanAttack = true;
+        //print("Can attack again!");
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (DrawGizmos)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, _actorStats.RangeVision);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, _actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
+            Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, -_actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
+        }
+    }
+
+    #endregion
+
+    #region Public
     public Transform[] CheckTargetsInRadious() //Checks and Returns a List of Targets that are in the AOE attack radious
     {
         Collider[] colls = Physics.OverlapSphere(transform.position, _actorStats.RangeVision, _attackStats.TargetList);
@@ -98,21 +104,12 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 
     public virtual void Attack()
     {
-        if (CanAttack)
-        {
-            CanAttack = false;
-            cooldownTimer = _attackStats.Cooldown;
-            OnAttack?.Invoke();
-        }
+        CanAttack = false;
+        OnAttack?.Invoke();
+        StartCoroutine(AttackTimer(_attackStats.Cooldown));
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _actorStats.RangeVision);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, _actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
-        Gizmos.DrawRay(transform.position + _actorStats.OffSetToCenter, Quaternion.Euler(0, -_actorStats.AngleVision / 2, 0) * transform.forward * _actorStats.RangeVision);
-    }
+    #endregion
+
 }

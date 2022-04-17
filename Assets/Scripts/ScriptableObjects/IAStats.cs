@@ -26,5 +26,8 @@ public class IAStats : ScriptableObject
     [SerializeField] private float _timePrediction = 5f;
 
     public float MaxDistanceFromTarget => _maxDistanceFromTarget;
-    [SerializeField] private float _maxDistanceFromTarget = 5f;    
+    [SerializeField] private float _maxDistanceFromTarget = 5f;
+
+    public bool CanReversePatrol => _canReversePatrol;
+    [SerializeField] private bool _canReversePatrol;
 }

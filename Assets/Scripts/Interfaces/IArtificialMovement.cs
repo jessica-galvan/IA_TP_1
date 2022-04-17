@@ -11,7 +11,6 @@ public interface IArtificialMovement : ILineOfSight//Es una IA con Movimiento, p
     ISteering Steering { get; }
     ISteering Avoidance { get; }
     Action<bool> OnMove { get; set; }
-    void InitilizeSteering();
     void Move(Vector3 dir);
     void LookDir(Vector3 dir);
     void SetNewSteering(ISteering newSteering);

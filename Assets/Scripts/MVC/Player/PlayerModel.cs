@@ -26,6 +26,7 @@ public class PlayerModel : EntityModel, IAttack, ITarget
     protected override void Awake()
     {
         base.Awake();
+        CanAttack = true;
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -35,29 +36,20 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         GameManager.instance.SetPlayer(this);
     }
 
-    protected virtual void Update()
+    private IEnumerator AttackTimer(float time)
     {
-        CheckCanAttack();
+        yield return new WaitForSeconds(time);
+        CanAttack = true;
     }
 
-    protected void CheckCanAttack()
-    {
-        if (!CanAttack)
-        {
-            if (cooldownTimer > 0)
-                cooldownTimer -= Time.deltaTime;
-            else
-                CanAttack = true;
-        }
-    }
-
+    #region Public
     public void Attack()
     {
         if (CanAttack)
         {
             CanAttack = false;
-            cooldownTimer = _attackStats.Cooldown;
             OnAttack?.Invoke();
+            StartCoroutine(AttackTimer(_attackStats.Cooldown));
         }
     }
 
@@ -71,6 +63,8 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         Move();
         base.IdleAnimation();
     }
+
+    #endregion
 
     //private void OnDrawGizmos()
     //{

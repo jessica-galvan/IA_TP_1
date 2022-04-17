@@ -3,32 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemySates
+{
+    Idle,
+    Patrol,
+    GetHit,
+    Steering,
+    Attack,
+    Dead,
+}
+
 public class EnemyBaseController : EntityController
 {
-    protected enum states
-    {
-        Idle,
-        Patrol, //Patrol is walking around an area, no chasing or any other steering behaviour
-        GetHit,
-        Steering,
-        Attack,
-        Dead,
-    }
-
     [SerializeField] protected float timeTree = 1f;
 
     protected EnemyBaseView _view;
-    protected FSM<states> _fsm;
-    protected IState<states> _attackState;
-    protected IState<states> _idleState;
-    protected IState<states> _deadState;
-    protected IState<states> _patrolState;
+    protected FSM<EnemySates> _fsm;
+    protected IState<EnemySates> _attackState;
+    protected IState<EnemySates> _idleState;
+    protected IState<EnemySates> _deadState;
+    protected IState<EnemySates> _patrolState;
     protected INode _rootNode;
 
+    #region Private
     protected override void Awake()
     {
         _model = GetComponent<EnemyBaseModel>();
-
     }
 
     protected override void Start() //Suscribir al LifeController.TakeDamage a una funcion que llame a la transicion de get hit con fms. 
@@ -40,17 +40,10 @@ public class EnemyBaseController : EntityController
 
     protected virtual void InitializedTree()
     {
-        INode dead = new ActionNode(()=> _fsm.Transition(states.Dead));
+        INode dead = new ActionNode(()=> _fsm.Transition(EnemySates.Dead));
         //INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit));
-        INode idle = new ActionNode(() => _fsm.Transition(states.Idle));
-        INode attack = new ActionNode(() => _fsm.Transition(states.Attack));
-
-        //INode patrol = new ActionNode(() => _fsm.Transition(states.Patrol)); 
-        //Dictionary<INode, int> random = new Dictionary<INode, int>();
-        //random[idle] = 50;
-        //random[patrol] = 50;
-        //INode randomAction = new RandomNode(random);
-        //INode qIsHit = new QuestionNode(LifeController); //TODO: add get hit to tree behaviour?
+        INode idle = new ActionNode(() => _fsm.Transition(EnemySates.Idle));
+        INode attack = new ActionNode(() => _fsm.Transition(EnemySates.Attack));
 
         INode qCanAttack = new QuestionNode(() => (_model as IAttack).CanAttack, attack, idle);
         INode qIsInAttackRange = new QuestionNode(CheckIsInAttackRange,qCanAttack, idle); //Si no esta en rango de ataque
@@ -73,7 +66,6 @@ public class EnemyBaseController : EntityController
                     answer = (_model as ILineOfSight).LineOfSight(targets[i]);
             }
         }
-        //print("Can see player? " + answer);
         return answer;
     }
 
@@ -90,17 +82,17 @@ public class EnemyBaseController : EntityController
 
     protected virtual void InitializedFSM()
     {
-        _fsm = new FSM<states>();
+        _fsm = new FSM<EnemySates>();
 
-        _attackState = new AttackState<states>((_model as IAttack), _rootNode);
-        _idleState = new IdleState<states>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
-        _deadState = new DeadState<states>(_model, timeTree);
+        _attackState = new PhysicalAttackState<EnemySates>((_model as IAttack), _rootNode);
+        _idleState = new IdleState<EnemySates>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
+        _deadState = new DeadState<EnemySates>(_model, timeTree);
 
-        _attackState.AddTransition(states.Dead, _deadState);
-        _attackState.AddTransition(states.Idle, _idleState);
+        _attackState.AddTransition(EnemySates.Dead, _deadState);
+        _attackState.AddTransition(EnemySates.Idle, _idleState);
 
-        _idleState.AddTransition(states.Attack, _attackState);
-        _idleState.AddTransition(states.Dead, _deadState);
+        _idleState.AddTransition(EnemySates.Attack, _attackState);
+        _idleState.AddTransition(EnemySates.Dead, _deadState);
 
         _fsm.SetInit(_idleState);
     }
@@ -109,17 +101,5 @@ public class EnemyBaseController : EntityController
     {
         _fsm.OnUpdate();
     }
-
-    //async void WaitForDeadEnemies() //Esto es para hacer una funcion asincronica. Podria ir en el bailecito de los enemigos luego de que destruyan a Crash. Esto es porque el destroy se hace en un frame mas tarde
-    //{
-    //    await Task.Delay(100);
-    //    _rootNode.Execute();
-    //}
-
-    protected bool CheckInDistance()
-    {
-        //TODO: check if player is in range of attack.
-        //state of pursit llama a esta funcion, si da true, que llame de nuevo al arbol!
-        return false;
-    }
+    #endregion
 }

@@ -39,8 +39,8 @@ public class PatrolState<T> : State<T>
     private void Movement()
     {
         Vector3 currentTarget = _model.PatrolRoute[currentPosition].transform.position;
-        Vector3 direction = (currentTarget - _model.transform.position).normalized;
-        //Vector3 direction = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + dir * _model.IAStats.SteeringWeight).normalized;
+        Vector3 dir = (currentTarget - _model.transform.position).normalized;
+        Vector3 direction = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + dir * _model.IAStats.SteeringWeight).normalized;
         _model.Move(direction);
         _model.LookDir(direction);
 

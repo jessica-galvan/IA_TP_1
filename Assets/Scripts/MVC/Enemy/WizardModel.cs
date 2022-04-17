@@ -3,26 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WizardModel : EnemyBaseModel, IPatrol
+public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
 {
     //Variables
     [SerializeField] private IAStats _stats;
-    [SerializeField] private bool _canReversePatrol;
+    [SerializeField] private BulletStats _bulletStats;
+    [SerializeField] private Transform _shootingPoint;
+    [SerializeField] private PlayerModel player;
     private ISteering _steering;
     private ISteering _avoidance;
     private float timeTurn = 1f;
 
     //Properties
+    public BulletStats BulletStats => _bulletStats;
     public ISteering Avoidance => _avoidance;
     public IAStats IAStats => _stats;
     public ISteering Steering => _steering;
-    public bool CanReversePatrol => _canReversePatrol;
-
     public GameObject[] PatrolRoute { get; private set; }
 
+    //Events
     public Action<bool> OnMove { get => _onMove; set => _onMove = value; }
     private Action<bool> _onMove = delegate { };
 
+    #region Private
     protected override void Awake()
     {
         base.Awake();
@@ -31,28 +34,23 @@ public class WizardModel : EnemyBaseModel, IPatrol
         PatrolRoute = patrol.PatrolNodes;
     }
 
-    protected override void Start()
-    {
-        base.Start();
-
-    }
-
-    public void InitilizeSteering()
+    protected void InitilizeSteering()
     {
         var seek = new Seek(this);
-        //var flee = new Flee(this);
-        //var pursuit = new Pursuit(this);
         _avoidance = new ObstacleAvoidance(this);
-        
         SetNewSteering(seek);
     }
 
     protected override void SetEnemyList(ITarget playerTarget)
     {
         base.SetEnemyList(playerTarget);
+        player = playerTarget as PlayerModel;
         InitilizeSteering();
     }
 
+    #endregion
+
+    #region Public
     public void Move(Vector3 dir)
     {
         dir.y = 0;
@@ -64,7 +62,8 @@ public class WizardModel : EnemyBaseModel, IPatrol
     public void LookDir(Vector3 dir)
     {
         dir.y = 0;
-        base.transform.forward = Vector3.Lerp(base.transform.forward, dir, timeTurn);
+        //transform.LookAt(dir);
+        transform.forward = Vector3.Lerp(transform.position, dir, timeTurn);
     }
 
     public void SetNewSteering(ISteering newSteering) //Patron Strategy: utiliar interfaces  
@@ -75,7 +74,7 @@ public class WizardModel : EnemyBaseModel, IPatrol
     public bool CheckIsInRange() //Lets check when to we are too close or too far away
     {
         float distance = (transform.position - Target.transform.position).sqrMagnitude;
-        print("is in range? " + (distance <= AttackStats.AttackRadious));
+        //print(distance + " Radious: " + AttackStats.AttackRadious);
         return distance <= AttackStats.AttackRadious;
     }
 
@@ -94,11 +93,17 @@ public class WizardModel : EnemyBaseModel, IPatrol
     public override void IdleAnimation()
     {
         base.IdleAnimation();  
-        print("idle animation called");
         OnMove?.Invoke(false);
         _rb.velocity = Vector3.zero;
-
     }
+
+    public void ShootBullet()
+    {
+        print("instantiate bullet");
+        var bullet = Instantiate(_bulletStats.Prefab, _shootingPoint.position, transform.rotation);
+        bullet.SetStats(AttackStats, BulletStats);
+        bullet.Initialize();
+    }
+    #endregion
 }
 
-    

@@ -44,7 +44,7 @@ public class ObstacleAvoidance : ISteering
             if (nearDistance == _stats.IAStats.RangeAvoidance) //para evitar dividir a 0. 
                 nearDistance = _stats.IAStats.RangeAvoidance - 0.01f;
 
-            dir = dir * (_stats.IAStats.RangeAvoidance - nearDistance / _stats.IAStats.RangeAvoidance); //Con este paso nos fijamos CUAN cerca esta el objeto. Si esta a la misma distancia que el radius, esta lo más lejos de lo detectable. 
+            //dir = dir * (_stats.IAStats.RangeAvoidance - nearDistance / _stats.IAStats.RangeAvoidance); //Con este paso nos fijamos CUAN cerca esta el objeto. Si esta a la misma distancia que el radius, esta lo más lejos de lo detectable. 
             return dir.normalized;
         }
 

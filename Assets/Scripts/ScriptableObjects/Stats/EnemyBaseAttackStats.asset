@@ -22,3 +22,5 @@ MonoBehaviour:
   _damage: 5
   _cooldown: 5
   _attackDelay: 1
+  _attackAnimationTime: 3
+  _bulletPrefab: {fileID: 8180681254318104797, guid: 2885819a182973c428cc499d8f90b685, type: 3}

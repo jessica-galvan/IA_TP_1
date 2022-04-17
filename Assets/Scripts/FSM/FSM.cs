@@ -39,4 +39,9 @@ public class FSM<T>
             SetInit(newState);
         }
     }
+
+    public void PrintCurrentTransition()
+    {
+        Debug.Log(_current);
+    }
 }
