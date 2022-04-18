@@ -49,6 +49,18 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         //print("Can attack again!");
     }
 
+    
+    //void OnSceneGUI()
+    //{
+    //    FieldOfView fow = (FieldOfView)target;
+    //    Handles.color = Color.white;
+    //    Vector3 viewAngleA = fow.DirFromAngle(-fow.viewAngle / 2, false);
+    //    Vector3 viewAngleB = fow.DirFromAngle(fow.viewAngle / 2, false);
+    //    Handles.DrawWireArc(fow.transform.position, Vector3.up, viewAngleA, fow.viewAngle, fow.viewRadius);
+    //    Handles.DrawLine(fow.transform.position, fow.transform.position + viewAngleA * fow.viewRadius);
+    //    Handles.DrawLine(fow.transform.position, fow.transform.position + viewAngleB * fow.viewRadius);
+    //}
+
     private void OnDrawGizmos()
     {
         if (DrawGizmos)
@@ -108,7 +120,6 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         OnAttack?.Invoke();
         StartCoroutine(AttackTimer(_attackStats.Cooldown));
     }
-
 
     #endregion
 

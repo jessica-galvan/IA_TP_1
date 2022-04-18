@@ -21,6 +21,8 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     public ISteering Steering => _steering;
     public GameObject[] PatrolRoute { get; private set; }
 
+
+
     //Events
     public Action<bool> OnMove { get => _onMove; set => _onMove = value; }
     private Action<bool> _onMove = delegate { };
@@ -99,7 +101,6 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
 
     public void ShootBullet()
     {
-        print("instantiate bullet");
         var bullet = Instantiate(_bulletStats.Prefab, _shootingPoint.position, transform.rotation);
         bullet.SetStats(AttackStats, BulletStats);
         bullet.Initialize();
