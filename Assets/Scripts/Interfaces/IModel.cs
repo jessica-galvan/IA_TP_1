@@ -11,7 +11,7 @@ public interface IModel
     public AttackStats AttackStats { get; }
 
     Action OnIdle { get; }
-    Action OnDie { get; }
+    Action OnDie { get; set; }
     Action OnHit { get; }
 
     void IdleAnimation();

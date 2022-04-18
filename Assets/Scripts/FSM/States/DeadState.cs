@@ -16,6 +16,7 @@ public class DeadState<T> : State<T>
 
     public override void Init()
     {
+        Debug.Log("Let's die");
         _model.DieAnimation();
         //_counter = _timeToDead;
         //_model?.LifeController.TakeDamage(_model.LifeController.CurrentLife); //Por ahora lo mata sacandole toda la vida.

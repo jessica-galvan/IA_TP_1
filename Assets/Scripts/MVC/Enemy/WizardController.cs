@@ -30,7 +30,7 @@ public class WizardController : EnemyBaseController
         INode qCanAttack = new QuestionNode(CanAttack, attack, idle); //Si estas en rango, pero no te puedo atacar-> idle. 
         INode qIsInAttackRange = new QuestionNode((_model as IArtificialMovement).CheckIsInRange, qCanAttack, steering); //Si no esta en rango de ataque -> chase.
         INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction); // Si no esta visible -> idle
-        INode qIsDead = new QuestionNode(() => _model.LifeController.IsDead, dead, qLineOfSight); //Si no estas con vida -> muerto.
+        INode qIsDead = new QuestionNode(IsDead, dead, qLineOfSight); //Si no estas con vida -> muerto.
 
         _rootNode = qIsDead;;
     }

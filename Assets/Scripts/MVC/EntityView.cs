@@ -24,7 +24,7 @@ public abstract class EntityView : MonoBehaviour
     protected virtual void SubscribeEvents()
     {
         //_model.LifeController.OnTakeDamage += OnTakeDamage;
-        //_model.LifeController.OnDie += OnDeath;
+        _model.OnDie += OnDeath;
     }
 
     protected virtual void Idle()
@@ -39,7 +39,8 @@ public abstract class EntityView : MonoBehaviour
 
     protected virtual void OnDeath()
     {
-        _animator?.SetTrigger("Die");
+        print(gameObject.name + "entre");
+        _animator?.SetBool("Die", true);
     }
 
     protected virtual void DeathAnimationOver()

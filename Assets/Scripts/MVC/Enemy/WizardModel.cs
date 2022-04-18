@@ -22,7 +22,6 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     public GameObject[] PatrolRoute { get; private set; }
 
 
-
     //Events
     public Action<bool> OnMove { get => _onMove; set => _onMove = value; }
     private Action<bool> _onMove = delegate { };

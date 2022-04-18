@@ -19,7 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   attackRadious: 50
-  _damage: 5
+  _damage: 1
   _cooldown: 5
   _attackDelay: 0.6
   _attackAnimationTime: 3

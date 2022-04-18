@@ -36,6 +36,11 @@ public abstract class EntityController : MonoBehaviour
         OnGetHit?.Invoke();
     }
 
+    protected virtual bool IsDead()
+    {
+        return _model.LifeController.IsDead;
+    }
+
     protected virtual void OnDestroy()
     {
         _model.LifeController.OnTakeDamage -= GetHit;

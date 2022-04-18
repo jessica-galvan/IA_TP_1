@@ -9,6 +9,7 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     [Header("Stats")]
     [SerializeField] protected ActorStats _actorStats;
     [SerializeField] protected AttackStats _attackStats;
+    [SerializeField] protected float deathTimer = 4f;
 
     //PROPIEDADES
     public ActorStats ActorStats => _actorStats;
@@ -16,13 +17,14 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     public LifeController LifeController { get; private set; }
 
     public Action OnIdle { get => _onIdle; set => _onIdle = value; }
-    private Action _onIdle = delegate { };
+    protected Action _onIdle = delegate { };
 
     public Action OnHit{ get => _onHit; set => _onHit = value; }
-    private Action _onHit = delegate { };
+    protected Action _onHit = delegate { };
 
     public Action OnDie { get => _onDie; set => _onDie = value; }
-    private Action _onDie = delegate { };
+    protected Action _onDie = delegate { };
+
 
     protected virtual void Awake()
     {
@@ -52,6 +54,13 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     public virtual void DieAnimation()
     {
         OnDie?.Invoke();
+        StartCoroutine(DieTimer(deathTimer));
+    }
+
+    protected IEnumerator DieTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
     }
 
 }

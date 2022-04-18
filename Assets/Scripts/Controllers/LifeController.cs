@@ -48,6 +48,7 @@ public class LifeController : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
+
         if (CurrentLife > 0)
         {
             CurrentLife -= damage;
