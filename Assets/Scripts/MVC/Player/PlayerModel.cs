@@ -42,6 +42,11 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         CanAttack = true;
     }
 
+    protected override void OnDeath()
+    {
+        GameManager.instance.GameOver();
+    }
+
     #region Public
     public void Attack()
     {
@@ -63,7 +68,6 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         Move();
         base.IdleAnimation();
     }
-
     #endregion
 
     //private void OnDrawGizmos()

@@ -41,6 +41,17 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
         LifeController.SetStats(_actorStats);
     }
 
+    protected IEnumerator DieTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        OnDeath();
+    }
+
+    protected virtual void OnDeath()
+    {
+        Destroy(gameObject);
+    }
+
     public virtual void IdleAnimation()
     {
         OnIdle?.Invoke();
@@ -57,10 +68,6 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
         StartCoroutine(DieTimer(deathTimer));
     }
 
-    protected IEnumerator DieTimer(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
-    }
+
 
 }

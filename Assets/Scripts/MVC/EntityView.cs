@@ -39,7 +39,6 @@ public abstract class EntityView : MonoBehaviour
 
     protected virtual void OnDeath()
     {
-        print(gameObject.name + "entre");
         _animator?.SetBool("Die", true);
     }
 
