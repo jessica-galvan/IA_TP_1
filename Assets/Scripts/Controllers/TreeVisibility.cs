@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreeVisibility : MonoBehaviour
 {
-    [SerializeField] private float transparency = 0.3f;
+    [SerializeField] private float transparency = 0.1f;
     private Color textureColor;
     private MeshRenderer meshRend;
     private float timer = 5f;
