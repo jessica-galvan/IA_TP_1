@@ -15,7 +15,7 @@ MonoBehaviour:
   _timeRoot: 1
   _obstacleList:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   _angleAvoidance: 270
   _rangeAvoidance: 3
   _steeringWeight: 1

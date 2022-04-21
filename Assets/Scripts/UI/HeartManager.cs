@@ -31,7 +31,7 @@ public class HeartManager : MonoBehaviour
         for (int i = 0; i < lifeController.MaxLife; i++)
         {
             GameObject newHeart = Instantiate(heart);
-            newHeart.transform.parent = gameObject.transform;
+            newHeart.transform.SetParent(gameObject.transform);
             hearts.Add(newHeart);
         }
     }

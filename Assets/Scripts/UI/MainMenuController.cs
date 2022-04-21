@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
-    [SerializeField] private string gameSceneName = "SampleScene";
-
     [Header("Buttons")]
     [SerializeField] private Button buttonPlay;
     [SerializeField] private Button buttonQuit;

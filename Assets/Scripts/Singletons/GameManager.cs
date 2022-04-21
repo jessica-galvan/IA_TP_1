@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     //SINGLETON
     public static GameManager instance;
 
-    [SerializeField] private string levelScene = "SampleScene";
+    [SerializeField] private string levelScene = "Level";
     [SerializeField] private string menuScene = "MainMenu";
     [SerializeField] private string victoryScene = "Victory";
     [SerializeField] private string gameOverScene = "GameOver";
@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public ITarget Player { get; private set; }
     public string MenuScene => menuScene;
     public string LevelScene => levelScene;
+    public string CurrentScene { get; set; }
 
     //EVENTS
     public Action OnPause;

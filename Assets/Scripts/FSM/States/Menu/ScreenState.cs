@@ -19,9 +19,12 @@ public class ScreenState<T> : State<T>
 
     public override void Init()
     {
-        SceneManager.LoadScene(_sceneName);
-        //suscribe to button events. 
-        //check if there is ONE or TWO buttons (cuz game over is going to have two!
+        if(GameManager.instance.CurrentScene != _sceneName)
+        {
+            SceneManager.LoadScene(_sceneName);
+            //suscribe to button events. 
+            //check if there is ONE or TWO buttons (cuz game over is going to have two!
+        }
     }
 
     public override void Execute()

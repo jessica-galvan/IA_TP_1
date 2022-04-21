@@ -18,10 +18,11 @@ public class MenuState<T> : State<T>
 
     public override void Init()
     {
-        Debug.Log("Let's die");
-        SceneManager.LoadScene(_sceneName);
-        GameManager.instance.SetCursorActive(true);
-        Debug.Log("I'm still running");
+        if(GameManager.instance.CurrentScene != _sceneName)
+        {
+            SceneManager.LoadScene(_sceneName);
+            GameManager.instance.SetCursorActive(true);
+        }
     }
 
     public override void Execute()

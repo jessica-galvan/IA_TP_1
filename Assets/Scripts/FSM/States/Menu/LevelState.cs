@@ -23,9 +23,12 @@ public class LevelState<T> : State<T>
 
     public override void Init()
     {
-        SceneManager.LoadScene(_sceneName);
-        GameManager.instance.OnVictory += OnVictory;
-        GameManager.instance.OnGameOver += OnGameOver;
+        if(GameManager.instance.CurrentScene != _sceneName)
+        {
+            SceneManager.LoadScene(_sceneName);
+            GameManager.instance.OnVictory += OnVictory;
+            GameManager.instance.OnGameOver += OnGameOver;
+        }
     }
 
     public override void Execute()
