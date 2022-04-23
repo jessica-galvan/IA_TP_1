@@ -40,7 +40,7 @@ public class MovePlayerState<T> : State<T>
         _fsm.Transition(_inputIdle);
     }
 
-    public void Move(Vector3 direction) //TODO: Preguntar profe si se hace aca la logica del movimiento o en le Model?
+    public void Move(Vector3 direction)
     {
         if (direction == Vector3.zero)
             Idle();

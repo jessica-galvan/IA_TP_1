@@ -30,6 +30,12 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     protected override void Awake()
     {
         base.Awake();
+
+    }
+
+    protected override void Start()
+    {
+        base.Start();
         var patrol = GetComponentInChildren<PatrolRoute>();
         patrol.Initialize();
         PatrolRoute = patrol.PatrolNodes;

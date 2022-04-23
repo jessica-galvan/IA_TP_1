@@ -23,10 +23,14 @@ public class GameManager : MonoBehaviour
     //SINGLETON
     public static GameManager instance;
 
+    [Header("Scene Names")]
     [SerializeField] private string levelScene = "Level";
     [SerializeField] private string menuScene = "MainMenu";
     [SerializeField] private string victoryScene = "Victory";
     [SerializeField] private string gameOverScene = "GameOver";
+
+    [Header("Level things")]
+    [SerializeField] private Transform enemyNodesParent;
 
     //FMS
     //private FSM<GameStates> _fsm;
@@ -38,6 +42,7 @@ public class GameManager : MonoBehaviour
     //PROPIEDADES
     public bool IsGameFreeze { get; private set; }
     public ITarget Player { get; private set; }
+    public Transform PatrolNodeParent => enemyNodesParent;
     public string MenuScene => menuScene;
     public string LevelScene => levelScene;
     public string CurrentScene { get; set; }
@@ -45,6 +50,7 @@ public class GameManager : MonoBehaviour
     //EVENTS
     public Action OnPause;
     public Action<ITarget> OnPlayerInit;
+    public Action OnEnemyManagerInit;
     public Action OnVictory;
     public Action OnGameOver;
 
@@ -88,12 +94,10 @@ public class GameManager : MonoBehaviour
         if (value)
         {
             Time.timeScale = 0;
-            //TODO: lower music
         }
         else
         {
             Time.timeScale = 1;
-            //TODO: subir musica
         }         
     }
 

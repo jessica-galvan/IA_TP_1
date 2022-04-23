@@ -89,11 +89,6 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
         return targets;
     }
 
-    public bool CheckTargetInFront() //TODO: rework or erase. Only for physical! Checks if target is right in front of attack distance (foward, no AOE).
-    {
-        return Physics.Raycast(transform.position, transform.forward, _actorStats.RangeVision, _attackStats.TargetList);
-    }
-
     public bool LineOfSight(Transform target) //Check if Enemy Target is Visible (in angle, range and no obstacles).
     {
         //RANGE 
