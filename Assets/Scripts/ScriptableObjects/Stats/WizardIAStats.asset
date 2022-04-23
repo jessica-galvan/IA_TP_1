@@ -17,9 +17,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   _angleAvoidance: 270
-  _rangeAvoidance: 3
+  _rangeAvoidance: 2
   _steeringWeight: 1
-  _avoidanceWeight: 2
+  _avoidanceWeight: 0.1
   _timePrediction: 5
   _maxDistanceFromTarget: 30
-  _canReversePatrol: 0
+  _canReversePatrol: 1
+  _idlePertentaje: 3
+  _patrolPertentaje: 5

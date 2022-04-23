@@ -30,4 +30,10 @@ public class IAStats : ScriptableObject
 
     public bool CanReversePatrol => _canReversePatrol;
     [SerializeField] private bool _canReversePatrol;
+
+    public int RandomnessIdle => _idlePertentaje;
+    [SerializeField] private int _idlePertentaje = 5;
+
+    public int RandomnessPatrol => _patrolPertentaje;
+    [SerializeField] private int _patrolPertentaje = 5;
 }

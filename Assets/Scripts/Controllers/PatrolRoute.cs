@@ -25,12 +25,13 @@ public class PatrolRoute : MonoBehaviour
     private void ConvertToArray() //Toma del gameobject todos los transforms de los hijos y los pone en un array
     {
         patrolPoints = new Transform[this.transform.childCount + 1];
+        patrolPoints[0] = this.transform; //Tomamos como 0 el punto de partida.
         for (int i = 0; i < this.transform.childCount; i++)
         {
-            patrolPoints[i] = this.transform.GetChild(i).GetComponent<Transform>();   
+            patrolPoints[i + 1] = this.transform.GetChild(i).GetComponent<Transform>();   
         }
 
-        patrolPoints[patrolPoints.Length - 1] = this.transform; //Tomamos como 0 el punto de partida.
+
     }
 
     private void ConvertToNodes() //Y aca los instancia a objetos para que no se muevan con el enemigo. 

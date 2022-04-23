@@ -5,11 +5,16 @@ using UnityEngine;
 public class WizardController : EnemyBaseController
 {
     private IState<EnemySates> _steeringState;
+    private IArtificialMovement _ia;
 
     protected override void Awake()
     {
         base.Awake();
         _model = GetComponent<WizardModel>();
+        if (_model is IArtificialMovement)
+            _ia = _model as IArtificialMovement;
+        else
+            Debug.LogError("Model is missing IA movement interface");
     }
 
     protected override void InitializedTree()
@@ -22,8 +27,8 @@ public class WizardController : EnemyBaseController
         //INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit)); //TODO: add get hit animation?
 
         Dictionary<INode, int> random = new Dictionary<INode, int>();
-        random[idle] = 1;
-        random[patrol] = 99;
+        random[idle] = _ia.IAStats.RandomnessIdle;
+        random[patrol] = _ia.IAStats.RandomnessPatrol;
         INode randomAction = new RandomNode(random);
 
         //LOGIC: Is it dead? -> Can I See You? -> Are you in Attack Range? -> Can I Attack You?
