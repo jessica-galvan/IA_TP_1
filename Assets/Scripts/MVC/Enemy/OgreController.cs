@@ -48,7 +48,7 @@ public class OgreController : EnemyBaseController
         _attackState = new PhysicalAttackState<EnemySates>((_model as IAttack), _rootNode);
         _steeringState = new SteeringState<EnemySates>(_model as IArtificialMovement, _rootNode);
         _patrolState = new PatrolState<EnemySates>(_model as IPatrol, _rootNode, (_model as IPatrol).IAStats.CanReversePatrol);
-        _deadState = new DeadState<EnemySates>(_model, timeTree);
+        _deadState = new DeadState<EnemySates>(_model, (_model as IArtificialMovement).IAStats.TimeRoot);
 
         _attackState.AddTransition(EnemySates.Dead, _deadState);
         _attackState.AddTransition(EnemySates.Idle, _idleState);

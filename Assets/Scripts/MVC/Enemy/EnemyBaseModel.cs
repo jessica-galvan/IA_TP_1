@@ -7,6 +7,7 @@ using UnityEngine;
 public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
 {
     //Variables
+    [SerializeField] protected AttackStats _attackStats;
     [SerializeField] private bool DrawGizmos;
     protected float cooldownTimer;
     protected Rigidbody _rb;
@@ -14,7 +15,7 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
     //PROPIERTIES
     public bool CanAttack { get; private set; }
     public ITarget Target { get; private set; }
-
+    public AttackStats AttackStats => _attackStats;
     //EVENTS
     public Action OnAttack { get => _onAttack; set => _onAttack = value; }
     private Action _onAttack = delegate { };
@@ -46,20 +47,7 @@ public class EnemyBaseModel : EntityModel, IAttack, ILineOfSight
     {
         yield return new WaitForSeconds(time);
         CanAttack = true;
-        //print("Can attack again!");
     }
-
-    
-    //void OnSceneGUI()
-    //{
-    //    FieldOfView fow = (FieldOfView)target;
-    //    Handles.color = Color.white;
-    //    Vector3 viewAngleA = fow.DirFromAngle(-fow.viewAngle / 2, false);
-    //    Vector3 viewAngleB = fow.DirFromAngle(fow.viewAngle / 2, false);
-    //    Handles.DrawWireArc(fow.transform.position, Vector3.up, viewAngleA, fow.viewAngle, fow.viewRadius);
-    //    Handles.DrawLine(fow.transform.position, fow.transform.position + viewAngleA * fow.viewRadius);
-    //    Handles.DrawLine(fow.transform.position, fow.transform.position + viewAngleB * fow.viewRadius);
-    //}
 
     private void OnDrawGizmos()
     {

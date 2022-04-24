@@ -15,5 +15,6 @@ public interface IArtificialMovement : ILineOfSight//Es una IA con Movimiento, p
     void LookDir(Vector3 dir);
     void SetNewSteering(ISteering newSteering);
     bool CheckIsInRange();
-    bool CheckIsTooFar();
+    bool CheckIsStillTooNear();
+    void IdleAnimation();
 }

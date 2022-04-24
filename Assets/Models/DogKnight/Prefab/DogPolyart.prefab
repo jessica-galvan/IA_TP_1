@@ -1225,7 +1225,7 @@ GameObject:
   - component: {fileID: 2066896392038131574}
   - component: {fileID: 2066896392029128874}
   - component: {fileID: 554084498}
-  - component: {fileID: 554084499}
+  - component: {fileID: 1417161009}
   - component: {fileID: 554084493}
   - component: {fileID: 554084494}
   - component: {fileID: 554084496}
@@ -1288,8 +1288,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &554084499
-BoxCollider:
+--- !u!136 &1417161009
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1298,9 +1298,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.283488, z: 1}
-  m_Center: {x: 0, y: 0.7409587, z: 0}
+  m_Radius: 0.62870544
+  m_Height: 1.5705307
+  m_Direction: 1
+  m_Center: {x: 0.12870526, y: 0.72397393, z: 0}
 --- !u!114 &554084493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,7 +1328,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actorStats: {fileID: 11400000, guid: 8b2188cb282e28b40a1c98d7a1019cf4, type: 2}
   _attackStats: {fileID: 11400000, guid: d3a20b47fa9675b45a55e0166fb9727c, type: 2}
-  deathTimer: 2
 --- !u!114 &554084496
 MonoBehaviour:
   m_ObjectHideFlags: 0

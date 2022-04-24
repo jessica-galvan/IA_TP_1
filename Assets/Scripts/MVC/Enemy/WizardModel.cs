@@ -12,7 +12,6 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     [SerializeField] private PlayerModel player;
     private ISteering _steering;
     private ISteering _avoidance;
-    private float timeTurn = 1f;
 
     //Properties
     public BulletStats BulletStats => _bulletStats;
@@ -27,12 +26,6 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     private Action<bool> _onMove = delegate { };
 
     #region Private
-    protected override void Awake()
-    {
-        base.Awake();
-
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -70,7 +63,7 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     {
         dir.y = 0;
         //transform.LookAt(dir);
-        transform.forward = Vector3.Lerp(transform.position, dir, timeTurn);
+        transform.forward = Vector3.Lerp(transform.position, dir, IAStats.TimeTurn);
     }
 
     public void SetNewSteering(ISteering newSteering) //Patron Strategy: utiliar interfaces  
@@ -85,7 +78,7 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
         return distance <= AttackStats.AttackRadious;
     }
 
-    public bool CheckIsTooFar()
+    public bool CheckIsStillTooNear()
     {
         float distance = Vector3.Distance(transform.position, Target.transform.position);
         if (IAStats.MaxDistanceFromTarget < ActorStats.RangeVision) //Ehhh para que no vuelva a pasar, si la persecucion maxima es menor a la vision.. usan vision range. 

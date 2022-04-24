@@ -8,12 +8,10 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
 {
     [Header("Stats")]
     [SerializeField] protected ActorStats _actorStats;
-    [SerializeField] protected AttackStats _attackStats;
-    [SerializeField] protected float deathTimer = 4f;
 
     //PROPIEDADES
     public ActorStats ActorStats => _actorStats;
-    public AttackStats AttackStats => _attackStats;
+
     public LifeController LifeController { get; private set; }
 
     public Action OnIdle { get => _onIdle; set => _onIdle = value; }
@@ -65,9 +63,6 @@ public abstract class EntityModel : MonoBehaviour, IDamagable, IModel
     public virtual void DieAnimation()
     {
         OnDie?.Invoke();
-        StartCoroutine(DieTimer(deathTimer));
+        StartCoroutine(DieTimer(ActorStats.DeathTimer));
     }
-
-
-
 }

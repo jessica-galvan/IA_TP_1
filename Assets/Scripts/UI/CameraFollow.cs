@@ -11,7 +11,6 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float turnOnTimer = 1f;
     [SerializeField] Material transparentMaterial;
     private Vector3 target_Offset;
-    //private List<TreeVisibility> obs = new List<TreeVisibility>();
 
     private void Start()
     {
@@ -49,28 +48,6 @@ public class CameraFollow : MonoBehaviour
         {
             TreeVisibility obstacle = hit.collider.gameObject.GetComponent<TreeVisibility>();
             obstacle?.MeshActive();
-            //obs.Add(obstacle);
-            //obstacle.enabled = false;
-            //TurnOnAgain(turnOnTimer);
         }
     }
-
-
-    //private void SetObstacleListMeshActive()
-    //{
-    //    for (int i = obs.Count - 1; i >= 0; i--)
-    //    {
-    //        obs[i].enabled = true;
-    //        obs.Remove(obs[i]);
-    //    }
-    //}
-
-    //private IEnumerator TurnOnAgain(float timer)
-    //{
-    //    print("me activo");
-    //    yield return new WaitForSeconds(timer);
-    //    print("LLEGAMOS");
-    //}
-
-
 }

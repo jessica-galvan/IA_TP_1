@@ -13,14 +13,9 @@ public class SteeringState<T> : State<T>
         _root = root;
     }
 
-    public override void Init()
-    {
-        base.Init();
-    }
-
     public override void Execute()
     {
-        if (!_model.CheckIsInRange() && _model.CheckIsTooFar()) //Si no estamos en rango de atacar o estamos a muuucha distancia (el player hullo!)....
+        if (!_model.CheckIsInRange() && _model.CheckIsStillTooNear()) //Si no estamos en rango de atacar o estamos a muuucha distancia (el player hullo!)....
         {
             Vector3 dir = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + _model.Steering.GetDir() * _model.IAStats.SteeringWeight).normalized; //el avoidance puede ir adentro del state chase por ejemplo. o el seek, pursuit, flee, etc. 
             _model.LookDir(dir);

@@ -336,10 +336,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actorStats: {fileID: 11400000, guid: d344a1786c193344a88b625678b8638f, type: 2}
-  _attackStats: {fileID: 11400000, guid: 5c5029e4bed285b40a1e151c545678d1, type: 2}
-  deathTimer: 2
   _stats: {fileID: 11400000, guid: f8b0615a775079643a6507c0ce035dc9, type: 2}
   _target: {fileID: 554084494}
+  _targetList:
+    serializedVersion: 2
+    m_Bits: 0
+  fleeingSpeed: 0
+  DrawGizmos: 0
 --- !u!114 &471464036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.04
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -401,7 +404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.24
+      value: 3.13
       objectReference: {fileID: 0}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -713,7 +716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1839304754744059133, guid: cc2904f8420d54e45b80616562ff859c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3323879814962616926, guid: cc2904f8420d54e45b80616562ff859c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1063,11 +1066,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7584947646166498375, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.172
+      value: -4.32
       objectReference: {fileID: 0}
     - target: {fileID: 7584947646166498375, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 7584947646166498375, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1104,6 +1107,14 @@ PrefabInstance:
     - target: {fileID: 7586532911143991625, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
       propertyPath: m_Name
       value: Toon Chicken
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775822562840287109, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775822562840287109, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8243b387e53338c4a9a1331bd5479861, type: 3}

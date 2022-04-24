@@ -24,7 +24,6 @@ public class WizardController : EnemyBaseController
         INode attack = new ActionNode(() => _fsm.Transition(EnemySates.Attack));
         INode steering = new ActionNode(() => _fsm.Transition(EnemySates.Steering));
         INode patrol = new ActionNode(() => _fsm.Transition(EnemySates.Patrol));
-        //INode getHit = new ActionNode(() => _fsm.Transition(states.GetHit)); //TODO: add get hit animation?
 
         Dictionary<INode, int> random = new Dictionary<INode, int>();
         random[idle] = _ia.IAStats.RandomnessIdle;
@@ -33,22 +32,22 @@ public class WizardController : EnemyBaseController
 
         //LOGIC: Is it dead? -> Can I See You? -> Are you in Attack Range? -> Can I Attack You?
         INode qCanAttack = new QuestionNode(CanAttack, attack, idle); //Si estas en rango, pero no te puedo atacar-> idle. 
-        INode qIsInAttackRange = new QuestionNode((_model as IArtificialMovement).CheckIsInRange, qCanAttack, steering); //Si no esta en rango de ataque -> chase.
+        INode qIsInAttackRange = new QuestionNode(_ia.CheckIsInRange, qCanAttack, steering); //Si no esta en rango de ataque -> chase.
         INode qLineOfSight = new QuestionNode(CheckLineOfSight, qIsInAttackRange, randomAction); // Si no esta visible -> idle
         INode qIsDead = new QuestionNode(IsDead, dead, qLineOfSight); //Si no estas con vida -> muerto.
 
-        _rootNode = qIsDead;;
+        _rootNode = qIsDead;
     }
 
     protected override void InitializedFSM()
     {
         _fsm = new FSM<EnemySates>();
 
-        _idleState = new IdleState<EnemySates>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
+        _idleState = new IdleState<EnemySates>(_ia, _ia.IAStats.TimeIdle, _rootNode);
         _attackState = new ShootAttackState<EnemySates>((_model as IAttackMagic), _rootNode);
-        _steeringState = new SteeringState<EnemySates>(_model as IArtificialMovement, _rootNode);
-        _patrolState = new PatrolState<EnemySates>(_model as IPatrol, _rootNode, (_model as IPatrol).IAStats.CanReversePatrol);
-        _deadState = new DeadState<EnemySates>(_model, timeTree);
+        _steeringState = new SteeringState<EnemySates>(_ia, _rootNode);
+        _patrolState = new PatrolState<EnemySates>(_model as IPatrol, _rootNode, _ia.IAStats.CanReversePatrol);
+        _deadState = new DeadState<EnemySates>(_model, _ia.IAStats.TimeRoot);
 
         _attackState.AddTransition(EnemySates.Dead, _deadState);
         _attackState.AddTransition(EnemySates.Idle, _idleState);

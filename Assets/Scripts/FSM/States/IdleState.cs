@@ -5,8 +5,6 @@ using UnityEngine;
 public class IdleState<T> : CooldownState<T>
 {
     private IArtificialMovement _model;
-    private ILineOfSight _attack;
-    private INode _root;
 
     public IdleState(IArtificialMovement actor, float time, INode root) : base(time, root)
     {
@@ -16,7 +14,7 @@ public class IdleState<T> : CooldownState<T>
 
     public override void Init()
     {
-        (_model as IModel).IdleAnimation();
+        _model.IdleAnimation();
     }
 
     public override void Execute()
@@ -28,4 +26,5 @@ public class IdleState<T> : CooldownState<T>
                 _root.Execute();
         }
     }    
+
 }

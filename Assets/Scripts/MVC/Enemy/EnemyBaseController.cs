@@ -15,8 +15,6 @@ public enum EnemySates
 
 public class EnemyBaseController : EntityController
 {
-    [SerializeField] protected float timeTree = 1f;
-
     protected EnemyBaseView _view;
     protected FSM<EnemySates> _fsm;
     protected IState<EnemySates> _attackState;
@@ -86,7 +84,7 @@ public class EnemyBaseController : EntityController
 
         _attackState = new PhysicalAttackState<EnemySates>((_model as IAttack), _rootNode);
         _idleState = new IdleState<EnemySates>(_model as IArtificialMovement, (_model as IArtificialMovement).IAStats.TimeRoot, _rootNode);
-        _deadState = new DeadState<EnemySates>(_model, timeTree);
+        _deadState = new DeadState<EnemySates>(_model, (_model as IArtificialMovement).IAStats.TimeRoot);
 
         _attackState.AddTransition(EnemySates.Dead, _deadState);
         _attackState.AddTransition(EnemySates.Idle, _idleState);

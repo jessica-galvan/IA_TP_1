@@ -8,6 +8,12 @@ public class IAStats : ScriptableObject
     public float TimeRoot => _timeRoot;
     [SerializeField] float _timeRoot = 1f;
 
+    public float TimeTurn => _timeTurn;
+    [SerializeField] float _timeTurn = 1f;
+
+    public float DistanceFromNode => _distanceFromNode;
+    [SerializeField] private float _distanceFromNode = 1f;
+
     public LayerMask ObstacleList => _obstacleList;
     [SerializeField] private LayerMask _obstacleList;
 
@@ -28,12 +34,15 @@ public class IAStats : ScriptableObject
     public float MaxDistanceFromTarget => _maxDistanceFromTarget;
     [SerializeField] private float _maxDistanceFromTarget = 5f;
 
-    public bool CanReversePatrol => _canReversePatrol;
-    [SerializeField] private bool _canReversePatrol;
-
+    public float TimeIdle => _timeIdle;
+    [SerializeField] float _timeIdle = 1f;
     public int RandomnessIdle => _idlePertentaje;
     [SerializeField] private int _idlePertentaje = 5;
 
     public int RandomnessPatrol => _patrolPertentaje;
     [SerializeField] private int _patrolPertentaje = 5;
+
+
+    public bool CanReversePatrol => _canReversePatrol;
+    [SerializeField] private bool _canReversePatrol;
 }

@@ -23,7 +23,6 @@ public abstract class EntityView : MonoBehaviour
 
     protected virtual void SubscribeEvents()
     {
-        //_model.LifeController.OnTakeDamage += OnTakeDamage;
         _model.OnDie += OnDeath;
     }
 

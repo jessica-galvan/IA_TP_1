@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PatrolState<T> : State<T>
 {
-    private IPatrol _model;
-    private INode _root;
-    private bool _canRevert;
-    private int currentPosition = 0;
-    private bool isDoingReverse = false;
+    protected IPatrol _model;
+    protected INode _root;
+    protected bool _canRevert;
+    protected int currentPosition = 0;
+    protected bool isDoingReverse = false;
 
     public PatrolState(IPatrol model, INode root, bool canRevert = false)
     {
@@ -27,16 +27,13 @@ public class PatrolState<T> : State<T>
     {
         if (!_model.LineOfSight(_model.Target.transform))
         {
-            Movement();
-        }
-        else
-        {
             _root.Execute();
         }
 
+        Movement();
     }
 
-    private void Movement()
+    protected void Movement()
     {
         Vector3 currentTarget = _model.PatrolRoute[currentPosition].transform.position;
         Vector3 dir = (currentTarget - _model.transform.position).normalized;
@@ -53,7 +50,7 @@ public class PatrolState<T> : State<T>
         }
     }
 
-    private void ChangeCurrentPosition()
+    protected void ChangeCurrentPosition()
     {
         if (!isDoingReverse) //Si no hace reverse, esto va a dar siempre falso!
         {

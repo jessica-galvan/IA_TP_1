@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerModel : EntityModel, IAttack, ITarget
 {
+    [SerializeField] protected AttackStats _attackStats;
+
     //VARIABLES
     protected float cooldownTimer;
     protected Rigidbody _rb;
@@ -15,6 +17,7 @@ public class PlayerModel : EntityModel, IAttack, ITarget
     public bool CanAttack { get; private set ; }
     public float Velocity => _rb.velocity.magnitude;
     public Vector3 GetFoward => transform.forward;
+    public AttackStats AttackStats => _attackStats;
 
     //EVENTS
     private Action _onAttack = delegate { };
