@@ -72,9 +72,4 @@ public class PlayerModel : EntityModel, IAttack, ITarget
         base.IdleAnimation();
     }
     #endregion
-
-    //private void OnDrawGizmos()
-    //{
-    //    Debug.DrawRay(transform.position + _actorStats.OffSetToCenter, transform.forward, Color.red, _attackStats.AttackRadious);
-    //}
 }

@@ -9,8 +9,6 @@ public class PauseState<T> : State<T>
     private Button restartButton;
     private Button mainMenuButton;
     private Button quitButton;
-    //TODO: esto iria dentro del state machine del juego?
-
 
     public override void Init()
     {

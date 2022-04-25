@@ -18,20 +18,44 @@ public class MenuState<T> : State<T>
 
     public override void Init()
     {
-        if(GameManager.instance.CurrentScene != _sceneName)
+        if (SceneManager.GetActiveScene().name != _sceneName) //Si no estabamos en al escena... cargala
         {
             SceneManager.LoadScene(_sceneName);
             GameManager.instance.SetCursorActive(true);
         }
+
+        if (GameManager.instance.MenuController == null)
+            GameManager.instance.OnSetMenuController += OnSetMenuController;
+        else
+            SuscribeEvents();
     }
 
-    public override void Execute()
+    private void OnSetMenuController()
     {
-        //TODO: logica botones??? o algun script que le pase los inputs de los OnClickEvent?
+        GameManager.instance.OnSetMenuController -= OnSetMenuController;
+        SuscribeEvents();
     }
 
-    private void OnClickLevel()
+    private void SuscribeEvents()
+    {
+        GameManager.instance.MenuController.OnPlay += OnPlay;
+        GameManager.instance.MenuController.OnQuit += OnQuit;
+    }
+
+    private void OnPlay()
     {
         _fsm.Transition(_inputLevel);
+    }
+
+    private void OnQuit()
+    {
+        Debug.Log("Cerramos el juego");
+        Application.Quit();
+    }
+
+    public override void Exit()
+    {
+        GameManager.instance.MenuController.OnPlay -= OnPlay;
+        GameManager.instance.MenuController.OnQuit -= OnQuit;
     }
 }

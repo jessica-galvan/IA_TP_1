@@ -50,7 +50,7 @@ public class ChickenModel : EntityModel, IPatrol, ILineOfSight
     public void InitilizeSteering()
     {
         var flee = new Flee(this);
-        var escape = new Escape(this);
+        //var escape = new Escape(this);
         _avoidance = new ObstacleAvoidance(this);
         SetNewSteering(flee);
     }

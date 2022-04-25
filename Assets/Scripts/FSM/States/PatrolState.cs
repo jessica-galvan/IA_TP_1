@@ -17,12 +17,6 @@ public class PatrolState<T> : State<T>
         _canRevert = canRevert;
     }
 
-    public override void Init()
-    {
-        //Debug.Log("Patrol Lenght " + _model.PatrolRoute.Length);
-        //TODO: Decide if it should start from beginning to patrol or save last position and go back to that one.
-    }
-
     public override void Execute()
     {
         if (!_model.LineOfSight(_model.Target.transform))
@@ -38,11 +32,12 @@ public class PatrolState<T> : State<T>
         Vector3 currentTarget = _model.PatrolRoute[currentPosition].transform.position;
         Vector3 dir = (currentTarget - _model.transform.position).normalized;
         Vector3 direction = (_model.Avoidance.GetDir() * _model.IAStats.AvoidanceWeight + dir * _model.IAStats.SteeringWeight).normalized;
+        Debug.Log("I'm patroling " + direction);
         _model.Move(direction);
         _model.LookDir(direction);
 
         var distance = Vector3.Distance(_model.transform.position, currentTarget);
-        //Debug.Log("DISTANCIA " + distance);
+        
         if (distance <= 1f)
         {
             ChangeCurrentPosition();

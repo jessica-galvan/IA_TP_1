@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class ScreenController : MonoBehaviour
     [SerializeField] private Button buttonLevel;
     [SerializeField] private Button buttonMenu;
 
+    public Action OnLevel;
+    public Action OnMenu;
 
     void Awake()
     {
@@ -17,13 +20,25 @@ public class ScreenController : MonoBehaviour
         buttonMenu.onClick.AddListener(OnClickMenuHandler);
     }
 
+    void Start()
+    {
+        if (GameManager.instance.FSMActive)
+            GameManager.instance.SetScreenController(this);
+    }
+
     private void OnClickLevelHandler()
     {
-        SceneManager.LoadScene(GameManager.instance.LevelScene);
+        if (GameManager.instance.FSMActive)
+            OnLevel?.Invoke();
+        else
+            SceneManager.LoadScene(GameManager.instance.LevelScene);
     }
 
     private void OnClickMenuHandler()
     {
-        SceneManager.LoadScene(GameManager.instance.MenuScene);
+        if (GameManager.instance.FSMActive)
+            OnMenu?.Invoke();
+        else
+            SceneManager.LoadScene(GameManager.instance.MenuScene);
     }
 }

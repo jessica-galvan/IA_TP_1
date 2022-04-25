@@ -19,22 +19,29 @@ public class ScreenState<T> : State<T>
 
     public override void Init()
     {
-        if(GameManager.instance.CurrentScene != _sceneName)
+
+        if (SceneManager.GetActiveScene().name != _sceneName) //Si no estabamos en al escena... cargala
         {
             SceneManager.LoadScene(_sceneName);
-            //suscribe to button events. 
-            //check if there is ONE or TWO buttons (cuz game over is going to have two!
+            GameManager.instance.SetCursorActive(true);
         }
+
+        if (GameManager.instance.ScreenController == null)
+            GameManager.instance.OnSetScreenController += OnSetScreenController;
+        else
+            SuscribeEvents();
     }
 
-    public override void Execute()
+    private void OnSetScreenController()
     {
-        //check for button events?
+        GameManager.instance.OnSetScreenController -= OnSetScreenController;
+        SuscribeEvents();
     }
 
-    public override void Exit()
+    private void SuscribeEvents()
     {
-        //desuscribe to button events. 
+        GameManager.instance.ScreenController.OnLevel += OnClickLevel;
+        GameManager.instance.ScreenController.OnMenu += OnClickMenu;
     }
 
     private void OnClickMenu()
@@ -45,5 +52,14 @@ public class ScreenState<T> : State<T>
     private void OnClickLevel()
     {
         _fsm.Transition(_inputLevel);
+    }
+
+    public override void Exit()
+    {
+        if (GameManager.instance.ScreenController != null)
+        {
+            GameManager.instance.ScreenController.OnLevel -= OnClickLevel;
+            GameManager.instance.ScreenController.OnMenu -= OnClickMenu;
+        }
     }
 }

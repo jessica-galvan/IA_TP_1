@@ -69,7 +69,7 @@ public class EnemyBaseController : EntityController
 
     protected bool CheckIsInAttackRange()
     {
-        return (_model as IArtificialMovement).CheckIsInRange();  //TODO: mejorar. Por ahora es un raycast hacia adelante para chequear 
+        return (_model as IArtificialMovement).CheckIsInRange();
     }
 
     protected virtual bool CanAttack()

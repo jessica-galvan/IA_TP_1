@@ -53,6 +53,7 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     #region Public
     public void Move(Vector3 dir)
     {
+        print("moving on to: " + dir * _actorStats.Speed);
         dir.y = 0;
         _rb.velocity = dir * _actorStats.Speed;
 
@@ -62,8 +63,8 @@ public class WizardModel : EnemyBaseModel, IPatrol, IAttackMagic
     public void LookDir(Vector3 dir)
     {
         dir.y = 0;
-        //transform.LookAt(dir);
-        transform.forward = Vector3.Lerp(transform.position, dir, IAStats.TimeTurn);
+        if (dir != Vector3.zero)
+            transform.forward = Vector3.Lerp(transform.position, dir, IAStats.TimeTurn);
     }
 
     public void SetNewSteering(ISteering newSteering) //Patron Strategy: utiliar interfaces  

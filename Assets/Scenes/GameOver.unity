@@ -649,10 +649,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83260f7ea67e1704dbe3d99d51d859fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelScene: SampleScene
+  levelScene: Level
   menuScene: MainMenu
   victoryScene: Victory
   gameOverScene: GameOver
+  startingScene: 3
+  menuController: {fileID: 0}
+  screenController: {fileID: 1680961035}
+  enemyNodesParent: {fileID: 0}
 --- !u!4 &1148046050
 Transform:
   m_ObjectHideFlags: 0
@@ -933,7 +937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0013427734, y: 4.1378174}
+  m_AnchoredPosition: {x: -0.0009765625, y: 4.1378174}
   m_SizeDelta: {x: 0, y: 2.9400024}
   m_Pivot: {x: -1.9943734, y: 1.5964286}
 --- !u!114 &1739505696

@@ -33,11 +33,16 @@ public class InputController : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    CheckPause();
+    //}
+
+    public void PauseUpdate()
     {
         CheckPause();
     }

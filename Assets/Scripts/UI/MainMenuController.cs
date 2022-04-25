@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,11 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private Button buttonPlay;
     [SerializeField] private Button buttonQuit;
 
+    public Button PlayButton => buttonPlay;
+    public Button QuitButton => buttonQuit;
+
+    public Action OnPlay;
+    public Action OnQuit;
 
     void Awake()
     {
@@ -17,14 +23,28 @@ public class MainMenuController : MonoBehaviour
         buttonQuit.onClick.AddListener(OnClickQuitHandler);
     }
 
+    void Start()
+    {
+        if (GameManager.instance.FSMActive)
+            GameManager.instance.SetMenuController(this);
+    }
+
     private void OnClickPlayHandler()
     {
-        SceneManager.LoadScene(GameManager.instance.LevelScene);
+        if (GameManager.instance.FSMActive)
+            OnPlay?.Invoke();
+        else
+            SceneManager.LoadScene(GameManager.instance.LevelScene);
     }
 
     private void OnClickQuitHandler()
     {
-        Application.Quit();
-        print("Cerramos el juego");
+        if (GameManager.instance.FSMActive)
+            OnQuit?.Invoke();
+        else
+        {
+            Application.Quit();
+            print("Cerramos el juego");
+        }
     }
 }

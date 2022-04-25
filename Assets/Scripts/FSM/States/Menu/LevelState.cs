@@ -23,17 +23,23 @@ public class LevelState<T> : State<T>
 
     public override void Init()
     {
-        if(GameManager.instance.CurrentScene != _sceneName)
+
+        if (SceneManager.GetActiveScene().name != _sceneName) //Si no estabamos en al escena... cargala
         {
             SceneManager.LoadScene(_sceneName);
-            GameManager.instance.OnVictory += OnVictory;
-            GameManager.instance.OnGameOver += OnGameOver;
+            GameManager.instance.SetCursorActive(false);
         }
+
+        GameManager.instance.OnVictory += OnVictory;
+        GameManager.instance.OnGameOver += OnGameOver;
     }
+
+
 
     public override void Execute()
     {
-        //TODO: logica que corra el input controller update? no idea. 
+        if(InputController.instance != null)
+            InputController.instance.PauseUpdate();
         //PODRIIIA tener un listado de game objets y correr manualmente el update de todos los gameobjects necesarios en la escena pero... no nos compliquemos.
     }
 
@@ -53,9 +59,9 @@ public class LevelState<T> : State<T>
         _fsm.Transition(_inputGameOver);
     }
 
-    private void OnClickMenu() //Mover al Pause Menu
-    {
-        _fsm.Transition(_inputMenu);
-    }
+    //private void OnClickMenu() //Mover al Pause Menu
+    //{
+    //    _fsm.Transition(_inputMenu);
+    //}
 
 }
