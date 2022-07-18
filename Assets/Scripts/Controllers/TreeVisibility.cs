@@ -13,7 +13,7 @@ public class TreeVisibility : MonoBehaviour
     private void Awake()
     {
         meshRend = GetComponent<MeshRenderer>();
-        textureColor = meshRend.material.color;
+        //textureColor = meshRend.material.color;
     }
 
     public void MeshActive()

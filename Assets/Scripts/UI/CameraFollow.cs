@@ -39,7 +39,7 @@ public class CameraFollow : MonoBehaviour
         if (target)
         {
             transform.position = Vector3.Lerp(transform.position, target.transform.position + target_Offset, smoothTime);
-            CheckIfPlayerVisible();
+            //CheckIfPlayerVisible();
         }
     }
 
