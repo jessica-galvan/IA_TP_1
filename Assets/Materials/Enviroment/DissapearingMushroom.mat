@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Bias: 0.05
-    - _Frenquency: 10
-    - _Power: 0.5
+    - _Frenquency: 5
+    - _Power: 20
     - _Scale: 0.002
     - _Speed: 1
     - _TransAmbient: 0.2
